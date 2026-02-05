@@ -12,15 +12,12 @@ export async function GET(request: NextRequest) {
   const content = searchParams.get('c') || '';
 
   const isSell = action === 'SELL';
-  const actionText = isSell ? 'Sell' : 'Buy';
+  const actionText = isSell ? 'SELL' : 'BUY';
 
-  // Truncate content for display
-  const displayContent = content.length > 160
-    ? content.slice(0, 160) + '...'
+  // Truncate content for display - shorter for cleaner look
+  const displayContent = content.length > 140
+    ? content.slice(0, 140) + '...'
     : content;
-
-  // Fetch logo
-  const logoUrl = new URL('/logo.png', request.url).toString();
 
   return new ImageResponse(
     (
@@ -30,58 +27,91 @@ export async function GET(request: NextRequest) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#000000',
-          padding: 0,
+          backgroundColor: '#0a0a0a',
+          padding: 48,
         }}
       >
-        {/* Main Card */}
+        {/* Top Bar - Branding */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: 32,
+          }}
+        >
+          {/* Logo mark - simple F in circle */}
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 14,
+              backgroundColor: '#1d9bf0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 16,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 32,
+                fontWeight: 800,
+                color: '#ffffff',
+              }}
+            >
+              F
+            </span>
+          </div>
+          <span
+            style={{
+              fontSize: 32,
+              fontWeight: 700,
+              color: '#ffffff',
+              letterSpacing: '-0.5px',
+            }}
+          >
+            Freeport
+          </span>
+        </div>
+
+        {/* Main Content Card */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             flex: 1,
-            margin: 32,
+            backgroundColor: '#141414',
+            borderRadius: 24,
             padding: 40,
-            backgroundColor: '#16181c',
-            borderRadius: 16,
-            border: '1px solid #2f3336',
+            border: '1px solid #262626',
           }}
         >
-          {/* Header: Logo + Action + Ticker */}
+          {/* Action + Ticker Row */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              marginBottom: 24,
+              marginBottom: 28,
             }}
           >
-            {/* Freeport Logo */}
-            <img
-              src={logoUrl}
-              width={48}
-              height={48}
-              style={{
-                marginRight: 16,
-                borderRadius: 8,
-              }}
-            />
             {/* Action Badge */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '8px 20px',
-                borderRadius: 8,
-                backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
-                marginRight: 16,
+                padding: '12px 28px',
+                borderRadius: 12,
+                backgroundColor: isSell ? '#3d1515' : '#0d3320',
+                marginRight: 20,
               }}
             >
               <span
                 style={{
-                  fontSize: 28,
-                  fontWeight: 700,
-                  color: isSell ? '#ef4444' : '#22c55e',
+                  fontSize: 26,
+                  fontWeight: 800,
+                  color: isSell ? '#f87171' : '#4ade80',
+                  letterSpacing: '1px',
                 }}
               >
                 {actionText}
@@ -90,9 +120,10 @@ export async function GET(request: NextRequest) {
             {/* Ticker */}
             <span
               style={{
-                fontSize: 42,
-                fontWeight: 700,
-                color: '#e7e9ea',
+                fontSize: 52,
+                fontWeight: 800,
+                color: '#ffffff',
+                letterSpacing: '-1px',
               }}
             >
               {ticker}
@@ -105,8 +136,8 @@ export async function GET(request: NextRequest) {
               display: 'flex',
               flexDirection: 'column',
               flex: 1,
-              paddingLeft: 20,
-              borderLeft: '3px solid #2f3336',
+              paddingLeft: 24,
+              borderLeft: '4px solid #3b82f6',
             }}
           >
             {/* Handle */}
@@ -114,30 +145,30 @@ export async function GET(request: NextRequest) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: 12,
+                marginBottom: 16,
               }}
             >
-              {/* Avatar placeholder */}
+              {/* Avatar */}
               <div
                 style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 18,
-                  backgroundColor: '#2f3336',
-                  marginRight: 12,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 22,
+                  backgroundColor: '#262626',
+                  marginRight: 14,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <span style={{ fontSize: 18, color: '#71767b' }}>
+                <span style={{ fontSize: 20, fontWeight: 600, color: '#a1a1aa' }}>
                   {handle.charAt(0).toUpperCase()}
                 </span>
               </div>
               <span
                 style={{
-                  fontSize: 24,
-                  color: '#71767b',
+                  fontSize: 26,
+                  color: '#a1a1aa',
                   fontWeight: 500,
                 }}
               >
@@ -148,53 +179,36 @@ export async function GET(request: NextRequest) {
             {/* Content */}
             <p
               style={{
-                fontSize: 32,
-                color: '#e7e9ea',
-                lineHeight: 1.4,
+                fontSize: 34,
+                color: '#e4e4e7',
+                lineHeight: 1.45,
                 margin: 0,
+                fontWeight: 400,
               }}
             >
-              {displayContent}
+              "{displayContent}"
             </p>
           </div>
+        </div>
 
-          {/* Footer */}
-          <div
+        {/* Bottom CTA */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 28,
+          }}
+        >
+          <span
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: 24,
-              paddingTop: 20,
-              borderTop: '1px solid #2f3336',
+              fontSize: 22,
+              color: '#71717a',
+              fontWeight: 500,
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 26,
-                  fontWeight: 700,
-                  color: '#e7e9ea',
-                  letterSpacing: '-0.5px',
-                }}
-              >
-                Freeport
-              </span>
-            </div>
-            <span
-              style={{
-                fontSize: 20,
-                color: '#71767b',
-              }}
-            >
-              Trade on Freeport →
-            </span>
-          </div>
+            Tap to view trade on Freeport
+          </span>
         </div>
       </div>
     ),
