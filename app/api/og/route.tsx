@@ -39,29 +39,15 @@ export async function GET(request: NextRequest) {
             marginBottom: 32,
           }}
         >
-          {/* Logo mark - simple F in circle */}
-          <div
+          {/* Boat Logo */}
+          <img
+            src={new URL('/logo-white.png', request.url).toString()}
+            width={48}
+            height={48}
             style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
-              backgroundColor: '#1d9bf0',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 16,
+              marginRight: 14,
             }}
-          >
-            <span
-              style={{
-                fontSize: 32,
-                fontWeight: 800,
-                color: '#ffffff',
-              }}
-            >
-              F
-            </span>
-          </div>
+          />
           <span
             style={{
               fontSize: 32,
