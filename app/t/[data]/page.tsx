@@ -6,6 +6,7 @@ interface TradeData {
   t: string;  // ticker
   h: string;  // handle
   c: string;  // content
+  i?: string; // image URL (optional)
 }
 
 function decodeTradeData(encoded: string): TradeData | null {
@@ -31,9 +32,16 @@ export async function generateMetadata({ params }: { params: { data: string } })
   }
 
   const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
-  const title = `${action} ${trade.t}`;
-  const description = `@${trade.h}: "${trade.c.slice(0, 120)}${trade.c.length > 120 ? '...' : ''}"`;
-  const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com'}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 200))}`;
+  // Title is the tweet content (truncated)
+  const title = trade.c.length > 100 ? trade.c.slice(0, 100) + '...' : trade.c;
+  const description = `${action} ${trade.t} on Freeport`;
+
+  // Build OG image URL with all params
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com';
+  let ogImageUrl = `${baseUrl}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 200))}`;
+  if (trade.i) {
+    ogImageUrl += `&i=${encodeURIComponent(trade.i)}`;
+  }
 
   return {
     title: `${title} | Freeport`,

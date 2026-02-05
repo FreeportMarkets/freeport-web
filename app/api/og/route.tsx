@@ -10,14 +10,19 @@ export async function GET(request: NextRequest) {
   const ticker = searchParams.get('t') || 'BTC';
   const handle = searchParams.get('h') || 'trader';
   const content = searchParams.get('c') || '';
+  const imageUrl = searchParams.get('i') || '';
 
   const isSell = action === 'SELL';
-  const actionText = isSell ? 'SELL' : 'BUY';
+  const actionText = isSell ? 'Sell' : 'Buy';
 
-  // Truncate content for display - shorter for cleaner look
-  const displayContent = content.length > 140
-    ? content.slice(0, 140) + '...'
+  // Truncate content for display
+  const displayContent = content.length > 160
+    ? content.slice(0, 160) + '...'
     : content;
+
+  const hasImage = imageUrl && imageUrl.length > 0;
+  // Default to boat logo if no image
+  const displayImage = hasImage ? imageUrl : new URL('/logo-boat.png', request.url).toString();
 
   return new ImageResponse(
     (
@@ -27,188 +32,124 @@ export async function GET(request: NextRequest) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#0a0a0a',
-          padding: 48,
+          backgroundColor: '#000000',
         }}
       >
-        {/* Top Bar - Branding */}
+        {/* Image Section - Top */}
         <div
           style={{
             display: 'flex',
+            flex: 1,
+            backgroundColor: hasImage ? '#0a0a0a' : '#111111',
             alignItems: 'center',
-            marginBottom: 32,
+            justifyContent: 'center',
+            overflow: 'hidden',
           }}
         >
-          {/* Boat Logo in rounded container */}
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: 12,
-              backgroundColor: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 16,
-              padding: 6,
-            }}
-          >
+          {hasImage ? (
             <img
-              src={new URL('/logo-boat.png', request.url).toString()}
-              width={36}
-              height={36}
+              src={displayImage}
               style={{
-                objectFit: 'contain',
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
               }}
             />
-          </div>
-          <span
-            style={{
-              fontSize: 32,
-              fontWeight: 700,
-              color: '#ffffff',
-              letterSpacing: '-0.5px',
-            }}
-          >
-            Freeport
-          </span>
+          ) : (
+            /* Default: Centered boat logo */
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: 120,
+                  height: 120,
+                  borderRadius: 24,
+                  backgroundColor: '#ffffff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 20,
+                }}
+              >
+                <img
+                  src={displayImage}
+                  width={80}
+                  height={80}
+                  style={{ objectFit: 'contain' }}
+                />
+              </div>
+              <span style={{ fontSize: 36, fontWeight: 700, color: '#ffffff' }}>
+                Freeport
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* Main Content Card */}
+        {/* Text Section - Bottom (X-style blue-gray) */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            flex: 1,
-            backgroundColor: '#141414',
-            borderRadius: 24,
-            padding: 40,
-            border: '1px solid #262626',
+            padding: '28px 36px',
+            backgroundColor: '#1e2a3a',
           }}
         >
-          {/* Action + Ticker Row */}
+          {/* Tweet Content */}
+          <p
+            style={{
+              fontSize: 28,
+              color: '#ffffff',
+              lineHeight: 1.4,
+              margin: 0,
+              marginBottom: 12,
+              fontWeight: 400,
+            }}
+          >
+            {displayContent}
+          </p>
+
+          {/* Trade on Freeport */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              marginBottom: 28,
+              marginBottom: 8,
             }}
           >
-            {/* Action Badge */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '12px 28px',
-                borderRadius: 12,
-                backgroundColor: isSell ? '#3d1515' : '#0d3320',
-                marginRight: 20,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 26,
-                  fontWeight: 800,
-                  color: isSell ? '#f87171' : '#4ade80',
-                  letterSpacing: '1px',
-                }}
-              >
-                {actionText}
-              </span>
-            </div>
-            {/* Ticker */}
             <span
               style={{
-                fontSize: 52,
-                fontWeight: 800,
-                color: '#ffffff',
-                letterSpacing: '-1px',
+                fontSize: 20,
+                color: '#94a3b8',
+                fontWeight: 500,
               }}
             >
-              {ticker}
+              Trade on Freeport
             </span>
           </div>
 
-          {/* Quote Section */}
+          {/* Buy/Sell Asset on Freeport */}
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              flex: 1,
-              paddingLeft: 24,
-              borderLeft: '4px solid #3b82f6',
+              alignItems: 'center',
             }}
           >
-            {/* Handle */}
-            <div
+            <span
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: 16,
-              }}
-            >
-              {/* Avatar */}
-              <div
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 22,
-                  backgroundColor: '#262626',
-                  marginRight: 14,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <span style={{ fontSize: 20, fontWeight: 600, color: '#a1a1aa' }}>
-                  {handle.charAt(0).toUpperCase()}
-                </span>
-              </div>
-              <span
-                style={{
-                  fontSize: 26,
-                  color: '#a1a1aa',
-                  fontWeight: 500,
-                }}
-              >
-                @{handle}
-              </span>
-            </div>
-
-            {/* Content */}
-            <p
-              style={{
-                fontSize: 34,
-                color: '#e4e4e7',
-                lineHeight: 1.45,
-                margin: 0,
+                fontSize: 18,
+                color: '#64748b',
                 fontWeight: 400,
               }}
             >
-              "{displayContent}"
-            </p>
+              {actionText} {ticker} on Freeport
+            </span>
           </div>
-        </div>
-
-        {/* Bottom CTA */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 28,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 22,
-              color: '#71717a',
-              fontWeight: 500,
-            }}
-          >
-            Tap to view trade on Freeport
-          </span>
         </div>
       </div>
     ),
