@@ -34,9 +34,10 @@ export async function generateMetadata({ params }: { params: { data: string } })
   const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
 
   // og:title contains ALL text - iMessage renders this below the image
-  // Format: tweet content + @handle + action
-  // Truncate at ~100 chars since it renders as bold text
-  const displayContent = trade.c.length > 100 ? trade.c.slice(0, 100) + '...' : trade.c;
+  // Dynamic truncation: less text when image present (card already tall)
+  const hasImage = trade.i && trade.i.length > 0;
+  const maxLength = hasImage ? 100 : 200;
+  const displayContent = trade.c.length > maxLength ? trade.c.slice(0, maxLength) + '...' : trade.c;
   const title = `${displayContent}\n\n@${trade.h} · ${action} ${trade.t} on Freeport`;
   const description = 'Trade smarter with Freeport';
 
