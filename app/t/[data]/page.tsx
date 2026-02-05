@@ -46,12 +46,15 @@ export async function generateMetadata({ params }: { params: { data: string } })
   const title = `${ogContent}\n@${trade.h} · ${action} ${trade.t} on Freeport`;
   const description = 'Trade smarter with Freeport';
 
-  // OG image is just the visual (logo or trade image)
+  // OG image - pass all trade data so we can render a tweet card if no image
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com';
-  let ogImageUrl = `${baseUrl}/api/og`;
-  if (trade.i) {
-    ogImageUrl += `?i=${encodeURIComponent(trade.i)}`;
-  }
+  const ogParams = new URLSearchParams();
+  if (trade.i) ogParams.set('i', trade.i);
+  ogParams.set('h', trade.h);
+  ogParams.set('c', trade.c);
+  ogParams.set('a', trade.a);
+  ogParams.set('t', trade.t);
+  const ogImageUrl = `${baseUrl}/api/og?${ogParams.toString()}`;
 
   return {
     title,
