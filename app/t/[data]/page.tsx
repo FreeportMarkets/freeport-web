@@ -33,20 +33,21 @@ export async function generateMetadata({ params }: { params: { data: string } })
 
   const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
 
-  // og:title = short (text is in OG image, avoid redundancy)
-  const title = `${action} ${trade.t}`;
-  // og:description = tagline
-  const description = 'Trade on Freeport';
+  // og:title contains ALL text - iMessage renders this below the image
+  // Format: tweet content + @handle + action
+  const displayContent = trade.c.length > 160 ? trade.c.slice(0, 160) + '...' : trade.c;
+  const title = `${displayContent}\n@${trade.h} · ${action} ${trade.t} on Freeport`;
+  const description = 'Trade smarter with Freeport';
 
-  // Build OG image URL with all params (text embedded in image)
+  // OG image is just the visual (logo or trade image)
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com';
-  let ogImageUrl = `${baseUrl}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 180))}`;
+  let ogImageUrl = `${baseUrl}/api/og`;
   if (trade.i) {
-    ogImageUrl += `&i=${encodeURIComponent(trade.i)}`;
+    ogImageUrl += `?i=${encodeURIComponent(trade.i)}`;
   }
 
   return {
-    title: `${title} | Freeport`,
+    title,
     description,
     openGraph: {
       title,
