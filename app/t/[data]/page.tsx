@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: { data: string } })
   const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
   const title = `${action} ${trade.t}`;
   const description = `@${trade.h}: "${trade.c.slice(0, 120)}${trade.c.length > 120 ? '...' : ''}"`;
-  const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://freeport-web.vercel.app'}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 200))}`;
+  const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com'}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 200))}`;
 
   return {
     title: `${title} | Freeport`,
