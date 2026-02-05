@@ -7,22 +7,20 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
   const action = searchParams.get('a') || 'BUY';
-  const ticker = searchParams.get('t') || 'BTC';
+  const ticker = searchParams.get('t') || '';
   const handle = searchParams.get('h') || 'trader';
   const content = searchParams.get('c') || '';
   const imageUrl = searchParams.get('i') || '';
 
   const isSell = action === 'SELL';
   const actionText = isSell ? 'Sell' : 'Buy';
-
-  // Truncate content for display
-  const displayContent = content.length > 160
-    ? content.slice(0, 160) + '...'
-    : content;
-
   const hasImage = imageUrl && imageUrl.length > 0;
-  // Default to boat logo if no image
-  const displayImage = hasImage ? imageUrl : new URL('/logo-boat.png', request.url).toString();
+  const logoUrl = new URL('/logo-boat.png', request.url).toString();
+
+  // Truncate content
+  const displayContent = content.length > 180
+    ? content.slice(0, 180) + '...'
+    : content;
 
   return new ImageResponse(
     (
@@ -32,7 +30,7 @@ export async function GET(request: NextRequest) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#000000',
+          backgroundColor: '#1a2634',
         }}
       >
         {/* Image Section - Top */}
@@ -40,15 +38,15 @@ export async function GET(request: NextRequest) {
           style={{
             display: 'flex',
             flex: 1,
-            backgroundColor: hasImage ? '#0a0a0a' : '#111111',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
+            backgroundColor: hasImage ? '#000000' : '#1a2634',
           }}
         >
           {hasImage ? (
             <img
-              src={displayImage}
+              src={imageUrl}
               style={{
                 width: '100%',
                 height: '100%',
@@ -56,48 +54,35 @@ export async function GET(request: NextRequest) {
               }}
             />
           ) : (
-            /* Default: Centered boat logo */
             <div
               style={{
+                width: 200,
+                height: 200,
+                borderRadius: 40,
+                backgroundColor: '#ffffff',
                 display: 'flex',
-                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <div
-                style={{
-                  width: 120,
-                  height: 120,
-                  borderRadius: 24,
-                  backgroundColor: '#ffffff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 20,
-                }}
-              >
-                <img
-                  src={displayImage}
-                  width={80}
-                  height={80}
-                  style={{ objectFit: 'contain' }}
-                />
-              </div>
-              <span style={{ fontSize: 36, fontWeight: 700, color: '#ffffff' }}>
-                Freeport
-              </span>
+              <img
+                src={logoUrl}
+                width={130}
+                height={130}
+                style={{ objectFit: 'contain' }}
+              />
             </div>
           )}
         </div>
 
-        {/* Text Section - Bottom (X-style blue-gray) */}
+        {/* Text Section - Bottom (embedded in image like X) */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            padding: '28px 36px',
-            backgroundColor: '#1e2a3a',
+            padding: '24px 32px',
+            backgroundColor: '#1a2634',
+            borderTop: hasImage ? 'none' : 'none',
           }}
         >
           {/* Tweet Content */}
@@ -107,48 +92,44 @@ export async function GET(request: NextRequest) {
               color: '#ffffff',
               lineHeight: 1.4,
               margin: 0,
-              marginBottom: 12,
-              fontWeight: 400,
+              marginBottom: 16,
             }}
           >
-            {displayContent}
+            {displayContent || 'Trade on Freeport'}
           </p>
 
-          {/* Trade on Freeport */}
+          {/* Author + Action Row */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              marginBottom: 8,
+              gap: 12,
             }}
           >
-            <span
+            {/* Avatar */}
+            <div
               style={{
-                fontSize: 20,
-                color: '#94a3b8',
-                fontWeight: 500,
+                width: 36,
+                height: 36,
+                borderRadius: 18,
+                backgroundColor: '#334155',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              Trade on Freeport
-            </span>
-          </div>
-
-          {/* Buy/Sell Asset on Freeport */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <span
-              style={{
-                fontSize: 18,
-                color: '#64748b',
-                fontWeight: 400,
-              }}
-            >
-              {actionText} {ticker} on Freeport
-            </span>
+              <span style={{ fontSize: 16, fontWeight: 600, color: '#94a3b8' }}>
+                {handle.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: 18, color: '#e2e8f0', fontWeight: 600 }}>
+                @{handle}
+              </span>
+              <span style={{ fontSize: 16, color: '#64748b' }}>
+                {ticker ? `${actionText} ${ticker} on Freeport` : 'Trade on Freeport'}
+              </span>
+            </div>
           </div>
         </div>
       </div>
