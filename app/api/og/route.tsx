@@ -1,7 +1,19 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
+import { HANDLE_ICONS } from '../../data/logos';
 
 export const runtime = 'edge';
+
+function getHandleAvatarUrl(handle: string, baseUrl: string): string {
+  const normalized = handle.replace('@', '').toLowerCase();
+  const path = HANDLE_ICONS[normalized];
+  if (path) {
+    return `${baseUrl}${path}`;
+  }
+  // Fallback to UI avatars
+  const initial = handle.replace('@', '').charAt(0).toUpperCase();
+  return `https://ui-avatars.com/api/?name=${initial}&background=4d91f0&color=fff&size=88&bold=true`;
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -28,7 +40,7 @@ export async function GET(request: NextRequest) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#ffffff',
+            backgroundColor: '#0A0A0B',
           }}
         >
           <img
@@ -48,15 +60,15 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // If we have trade data but no image, render a tweet-style card
+  // If we have trade data but no image, render a trade card that looks like the app
   if (hasTradeData) {
     const isSell = action === 'SELL';
-    const actionColor = isSell ? '#ef4444' : '#22c55e';
-    const actionText = isSell ? 'SELL' : 'BUY';
+    const actionText = isSell ? 'Short' : 'Buy';
+    const avatarUrl = getHandleAvatarUrl(handle, baseUrl);
 
-    // Truncate content for the card (max ~200 chars for readability)
-    const displayContent = content.length > 200
-      ? content.slice(0, 200) + '...'
+    // Truncate content for readability
+    const displayContent = content.length > 280
+      ? content.slice(0, 280) + '...'
       : content;
 
     return new ImageResponse(
@@ -67,83 +79,112 @@ export async function GET(request: NextRequest) {
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#0a0a0a',
-            padding: 60,
+            backgroundColor: '#0A0A0B',
+            padding: '48px 56px',
           }}
         >
-          {/* Header: Logo + Branding */}
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: 40 }}>
-            <img
-              src={`${baseUrl}/logo-boat.png`}
-              width={56}
-              height={56}
-              style={{ marginRight: 16 }}
-            />
-            <span style={{ color: '#ffffff', fontSize: 32, fontWeight: 700 }}>
-              Freeport
-            </span>
-          </div>
-
-          {/* Trade Card */}
+          {/* Trade Card Container */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: '#18181b',
-              borderRadius: 20,
-              padding: 32,
-              border: '1px solid #27272a',
               flex: 1,
             }}
           >
-            {/* Action + Ticker Header */}
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 24 }}>
-              <span
-                style={{
-                  color: actionColor,
-                  fontSize: 24,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  marginRight: 16,
-                }}
-              >
-                {actionText}
-              </span>
-              <span style={{ color: '#ffffff', fontSize: 28, fontWeight: 700 }}>
-                {ticker}
-              </span>
-            </div>
-
-            {/* Divider */}
-            <div style={{ height: 1, backgroundColor: '#27272a', marginBottom: 24 }} />
-
-            {/* Quote Section */}
+            {/* Header Row: Avatar + Handle */}
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'column',
-                paddingLeft: 20,
-                borderLeft: '3px solid #3b82f6',
-                flex: 1,
+                alignItems: 'center',
+                marginBottom: 24,
               }}
             >
+              {/* Avatar */}
+              <img
+                src={avatarUrl}
+                width={88}
+                height={88}
+                style={{
+                  borderRadius: 44,
+                  marginRight: 20,
+                  objectFit: 'cover',
+                }}
+              />
               {/* Handle */}
-              <span style={{ color: '#71767b', fontSize: 22, marginBottom: 12 }}>
-                @{handle}
-              </span>
-
-              {/* Content */}
               <span
                 style={{
-                  color: '#e7e9ea',
-                  fontSize: 26,
-                  lineHeight: 1.4,
-                  flex: 1,
+                  fontSize: 36,
+                  fontWeight: 700,
+                  color: '#FFFFFF',
+                }}
+              >
+                @{handle}
+              </span>
+            </div>
+
+            {/* Content */}
+            <div
+              style={{
+                display: 'flex',
+                flex: 1,
+                marginBottom: 32,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 32,
+                  color: '#E5E7EB',
+                  lineHeight: 1.5,
                 }}
               >
                 {displayContent}
               </span>
             </div>
+
+            {/* Buy/Short Button */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: 3,
+                borderColor: '#4d91f0',
+                borderStyle: 'solid',
+                borderRadius: 16,
+                padding: '20px 32px',
+                gap: 12,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: '#4d91f0',
+                }}
+              >
+                {actionText} {ticker}
+              </span>
+            </div>
+          </div>
+
+          {/* Freeport Branding - Bottom Right */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              marginTop: 24,
+            }}
+          >
+            <img
+              src={`${baseUrl}/logo-boat.png`}
+              width={36}
+              height={36}
+              style={{ marginRight: 12 }}
+            />
+            <span style={{ color: '#6B7280', fontSize: 24, fontWeight: 600 }}>
+              Freeport
+            </span>
           </div>
         </div>
       ),
