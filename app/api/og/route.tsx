@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#0f172a',
+          backgroundColor: '#ffffff',
         }}
       >
         {hasImage ? (
@@ -32,24 +32,12 @@ export async function GET(request: NextRequest) {
             }}
           />
         ) : (
-          <div
-            style={{
-              width: 200,
-              height: 200,
-              borderRadius: 40,
-              backgroundColor: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <img
-              src={logoUrl}
-              width={130}
-              height={130}
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
+          <img
+            src={logoUrl}
+            width={400}
+            height={400}
+            style={{ objectFit: 'contain' }}
+          />
         )}
       </div>
     ),
