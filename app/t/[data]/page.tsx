@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTokenLogoUrl, getHandleIconUrl, getPlaceholderAvatar, getTickerPlaceholder } from '../../data/logos';
+import ViewTradeButton from './ViewTradeButton';
 
 // Trade data encoded in URL
 interface TradeData {
@@ -149,25 +150,10 @@ export default function TradePage({ params, searchParams }: {
           <p style={styles.content}>{trade.c}</p>
         </div>
 
-        {/* Trade Image (if present) */}
-        {trade.i && (
-          <div style={styles.imageContainer}>
-            <img
-              src={trade.i}
-              alt="Trade"
-              style={styles.tradeImage}
-            />
-          </div>
-        )}
       </div>
 
       {/* CTA */}
-      <a
-        href={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`}
-        style={styles.ctaButton}
-      >
-        View Trade
-      </a>
+      <ViewTradeButton deepLink={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`} />
 
       <p style={styles.footer}>
         Available on the App Store
@@ -264,16 +250,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 15,
     lineHeight: 1.5,
     margin: 0,
-  },
-  imageContainer: {
-    marginTop: 16,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  tradeImage: {
-    width: '100%',
-    maxHeight: 180,
-    objectFit: 'cover',
   },
   ctaButton: {
     padding: '16px 40px',

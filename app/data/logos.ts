@@ -92,6 +92,34 @@ export const TOKEN_LOGOS: Record<string, string> = {
   USBOND: '/logos/tokens/usbond.png',
   LIT: '/logos/tokens/lit.png',
   PUMP: '/logos/tokens/pump.png',
+
+  // Ondo tokens (with ON suffix) - map to base logos
+  COINON: '/logos/tokens/coin.png',
+  OPENAION: '/logos/tokens/openai.png',
+  ANTHRON: '/logos/tokens/anthropic.png',
+  ANTHRPON: '/logos/tokens/anthrp.png',
+  NVDAON: '/logos/tokens/nvda.png',
+  TSLAON: '/logos/tokens/tsla.png',
+  AAPLON: '/logos/tokens/aapl.png',
+  GOOGLON: '/logos/tokens/googl.png',
+  MSFTON: '/logos/tokens/msft.png',
+  AMZNON: '/logos/tokens/amzn.png',
+  METAON: '/logos/tokens/meta.png',
+  AMDON: '/logos/tokens/amd.png',
+  INTCON: '/logos/tokens/intc.png',
+  PLTRON: '/logos/tokens/pltr.png',
+  HOODON: '/logos/tokens/hood.png',
+  MSTRON: '/logos/tokens/mstr.png',
+  BABAON: '/logos/tokens/baba.png',
+  RIVNON: '/logos/tokens/rivn.png',
+  NFLXON: '/logos/tokens/nflx.png',
+  ORCLON: '/logos/tokens/orcl.png',
+  MUON: '/logos/tokens/mu.png',
+  SOLON: '/logos/tokens/sol.png',
+  BTCON: '/logos/tokens/btc.png',
+  ETHON: '/logos/tokens/eth.png',
+  SPACEXON: '/logos/tokens/spacex.png',
+  ANDURILON: '/logos/tokens/anduril.png',
 };
 
 // Handle avatar icons - /public/logos/handles/
@@ -177,8 +205,28 @@ export const HANDLE_ICONS: Record<string, string> = {
 // Get token logo URL
 export function getTokenLogoUrl(ticker: string): string | null {
   if (!ticker) return null;
-  const normalized = ticker.toUpperCase();
-  return TOKEN_LOGOS[normalized] || null;
+  const upper = ticker.toUpperCase();
+
+  // Direct match first
+  if (TOKEN_LOGOS[upper]) return TOKEN_LOGOS[upper];
+
+  // Try stripping "ON" suffix (Ondo tokens like COINon -> COIN)
+  if (upper.endsWith('ON') && upper.length > 2) {
+    const withoutOn = upper.slice(0, -2);
+    if (TOKEN_LOGOS[withoutOn]) return TOKEN_LOGOS[withoutOn];
+  }
+
+  // Try common variations
+  const variations = [
+    upper.replace('ON', ''),  // COINon -> COIN
+    upper.replace('-', ''),   // X-AI -> XAI
+  ];
+
+  for (const v of variations) {
+    if (TOKEN_LOGOS[v]) return TOKEN_LOGOS[v];
+  }
+
+  return null;
 }
 
 // Get handle avatar URL
