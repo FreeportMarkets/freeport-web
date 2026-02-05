@@ -39,15 +39,29 @@ export async function GET(request: NextRequest) {
             marginBottom: 32,
           }}
         >
-          {/* Boat Logo */}
-          <img
-            src={new URL('/logo-white.png', request.url).toString()}
-            width={48}
-            height={48}
+          {/* Boat Logo in rounded container */}
+          <div
             style={{
-              marginRight: 14,
+              width: 52,
+              height: 52,
+              borderRadius: 12,
+              backgroundColor: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 16,
+              padding: 6,
             }}
-          />
+          >
+            <img
+              src={new URL('/logo-boat.png', request.url).toString()}
+              width={36}
+              height={36}
+              style={{
+                objectFit: 'contain',
+              }}
+            />
+          </div>
           <span
             style={{
               fontSize: 32,

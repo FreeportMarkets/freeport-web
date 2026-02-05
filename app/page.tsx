@@ -9,16 +9,28 @@ export default function Home() {
       padding: 20,
       backgroundColor: '#0a0a0a',
     }}>
-      {/* Logo */}
-      <img
-        src="/logo-white.png"
-        alt="Freeport"
-        width={80}
-        height={80}
-        style={{
-          marginBottom: 24,
-        }}
-      />
+      {/* Logo in rounded container */}
+      <div style={{
+        width: 88,
+        height: 88,
+        borderRadius: 20,
+        backgroundColor: '#ffffff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 24,
+        padding: 12,
+      }}>
+        <img
+          src="/logo-boat.png"
+          alt="Freeport"
+          width={56}
+          height={56}
+          style={{
+            objectFit: 'contain',
+          }}
+        />
+      </div>
       <h1 style={{
         fontSize: 48,
         fontWeight: 700,

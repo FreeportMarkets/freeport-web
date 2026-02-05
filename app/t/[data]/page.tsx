@@ -127,7 +127,9 @@ export default function TradePage({ params, searchParams }: {
         {/* Branding */}
         <div style={styles.branding}>
           <div style={styles.brandingLeft}>
-            <img src="/logo-white.png" alt="Freeport" width={24} height={24} style={{ marginRight: 10 }} />
+            <div style={styles.logoContainer}>
+              <img src="/logo-boat.png" alt="Freeport" width={18} height={18} style={{ objectFit: 'contain' }} />
+            </div>
             <span style={styles.logo}>Freeport</span>
           </div>
           <span style={styles.tagline}>Trade smarter</span>
@@ -246,6 +248,17 @@ const styles: { [key: string]: React.CSSProperties } = {
   brandingLeft: {
     display: 'flex',
     alignItems: 'center',
+  },
+  logoContainer: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    backgroundColor: '#ffffff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    padding: 4,
   },
   logo: {
     fontWeight: 700,
