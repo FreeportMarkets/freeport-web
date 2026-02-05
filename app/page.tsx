@@ -50,7 +50,7 @@ export default function Home() {
         maxWidth: 320,
         lineHeight: 1.5,
       }}>
-        Trade smarter with real-time signals from top traders
+        Trade smarter with real-time signals
       </p>
       <a
         href="https://apps.apple.com/app/freeport/id6745072874"

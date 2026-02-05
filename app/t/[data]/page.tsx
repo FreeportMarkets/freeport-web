@@ -132,7 +132,7 @@ export default function TradePage({ params, searchParams }: {
             </div>
             <span style={styles.logo}>Freeport</span>
           </div>
-          <span style={styles.tagline}>Trade smarter</span>
+          <span style={styles.tagline}>Trade smarter with real-time signals</span>
         </div>
       </div>
     </div>
