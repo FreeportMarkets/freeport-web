@@ -65,7 +65,8 @@ export default function TradePage({ params, searchParams }: {
     return (
       <div style={styles.container}>
         <div style={styles.card}>
-          <h1 style={styles.title}>Trade not found</h1>
+          <h1 style={styles.errorTitle}>Trade not found</h1>
+          <p style={styles.errorText}>This trade may have expired or the link is invalid.</p>
           <a href="https://apps.apple.com/app/freeport/id6745072874" style={styles.ctaButton}>
             Get Freeport
           </a>
@@ -74,22 +75,37 @@ export default function TradePage({ params, searchParams }: {
     );
   }
 
-  const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
-  const actionColor = trade.a === 'SELL' ? '#ef4444' : '#22c55e';
-  const actionEmoji = trade.a === 'SELL' ? '📉' : '📈';
+  const isSell = trade.a === 'SELL';
+  const action = isSell ? 'Sell' : 'Buy';
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        {/* Action Badge */}
-        <div style={{ ...styles.actionBadge, color: actionColor }}>
-          {actionEmoji} {action} {trade.t}
+        {/* Header */}
+        <div style={styles.header}>
+          <div style={{
+            ...styles.actionBadge,
+            backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+          }}>
+            <span style={{
+              ...styles.actionText,
+              color: isSell ? '#ef4444' : '#22c55e',
+            }}>
+              {action}
+            </span>
+          </div>
+          <span style={styles.ticker}>{trade.t}</span>
         </div>
 
         {/* Quote */}
-        <div style={styles.quote}>
-          <span style={styles.handle}>@{trade.h}</span>
-          <p style={styles.content}>"{trade.c}"</p>
+        <div style={styles.quoteSection}>
+          <div style={styles.handleRow}>
+            <div style={styles.avatar}>
+              {trade.h.charAt(0).toUpperCase()}
+            </div>
+            <span style={styles.handle}>@{trade.h}</span>
+          </div>
+          <p style={styles.content}>{trade.c}</p>
         </div>
 
         {/* CTAs */}
@@ -104,7 +120,7 @@ export default function TradePage({ params, searchParams }: {
             href="https://apps.apple.com/app/freeport/id6745072874"
             style={styles.ctaSecondary}
           >
-            Get Freeport
+            Don't have the app? Download Freeport
           </a>
         </div>
 
@@ -124,34 +140,69 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#0d0d0e',
+    padding: 16,
+    backgroundColor: '#000000',
   },
   card: {
     maxWidth: 480,
     width: '100%',
-    backgroundColor: '#1a1a1c',
+    backgroundColor: '#16181c',
     borderRadius: 16,
     padding: 24,
+    border: '1px solid #2f3336',
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 20,
+    gap: 12,
   },
   actionBadge: {
+    padding: '6px 14px',
+    borderRadius: 6,
+  },
+  actionText: {
+    fontSize: 16,
+    fontWeight: 700,
+  },
+  ticker: {
     fontSize: 28,
     fontWeight: 700,
-    marginBottom: 20,
+    color: '#e7e9ea',
   },
-  quote: {
+  quoteSection: {
+    paddingLeft: 16,
+    borderLeft: '3px solid #2f3336',
     marginBottom: 24,
   },
-  handle: {
-    color: '#4d91f0',
+  handleRow: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 10,
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#2f3336',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#71767b',
     fontSize: 14,
     fontWeight: 600,
   },
+  handle: {
+    color: '#71767b',
+    fontSize: 15,
+    fontWeight: 500,
+  },
   content: {
-    color: '#e5e7eb',
-    fontSize: 18,
+    color: '#e7e9ea',
+    fontSize: 17,
     lineHeight: 1.5,
-    marginTop: 8,
+    margin: 0,
   },
   ctaContainer: {
     display: 'flex',
@@ -160,31 +211,31 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   ctaButton: {
     display: 'block',
-    padding: '16px 24px',
-    backgroundColor: '#4d91f0',
+    padding: '14px 24px',
+    backgroundColor: '#1d9bf0',
     color: '#fff',
-    borderRadius: 12,
+    borderRadius: 9999,
     textDecoration: 'none',
-    fontWeight: 600,
-    fontSize: 16,
+    fontWeight: 700,
+    fontSize: 15,
     textAlign: 'center',
   },
   ctaSecondary: {
     display: 'block',
-    padding: '16px 24px',
+    padding: '14px 24px',
     backgroundColor: 'transparent',
-    color: '#6b7280',
-    borderRadius: 12,
+    color: '#71767b',
+    borderRadius: 9999,
     textDecoration: 'none',
     fontWeight: 500,
     fontSize: 14,
     textAlign: 'center',
-    border: '1px solid #374151',
+    border: '1px solid #2f3336',
   },
   branding: {
-    marginTop: 24,
+    marginTop: 20,
     paddingTop: 16,
-    borderTop: '1px solid #374151',
+    borderTop: '1px solid #2f3336',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -192,16 +243,22 @@ const styles: { [key: string]: React.CSSProperties } = {
   logo: {
     fontWeight: 700,
     fontSize: 16,
-    color: '#fff',
+    color: '#e7e9ea',
   },
   tagline: {
     fontSize: 14,
-    color: '#6b7280',
+    color: '#71767b',
   },
-  title: {
+  errorTitle: {
     fontSize: 24,
     fontWeight: 700,
-    color: '#fff',
+    color: '#e7e9ea',
+    marginBottom: 8,
+    marginTop: 0,
+  },
+  errorText: {
+    fontSize: 15,
+    color: '#71767b',
     marginBottom: 20,
   },
 };

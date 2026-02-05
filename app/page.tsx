@@ -7,24 +7,45 @@ export default function Home() {
       alignItems: 'center',
       justifyContent: 'center',
       padding: 20,
+      backgroundColor: '#000000',
     }}>
-      <h1 style={{ fontSize: 48, fontWeight: 700, marginBottom: 16 }}>Freeport</h1>
-      <p style={{ color: '#6b7280', fontSize: 18 }}>Trade smarter.</p>
+      <h1 style={{
+        fontSize: 56,
+        fontWeight: 700,
+        color: '#e7e9ea',
+        marginBottom: 12,
+        letterSpacing: '-1px',
+      }}>
+        Freeport
+      </h1>
+      <p style={{
+        color: '#71767b',
+        fontSize: 18,
+        marginBottom: 32,
+      }}>
+        Trade smarter with real-time signals
+      </p>
       <a
         href="https://apps.apple.com/app/freeport/id6745072874"
         style={{
-          marginTop: 32,
           padding: '16px 32px',
-          backgroundColor: '#4d91f0',
+          backgroundColor: '#1d9bf0',
           color: '#fff',
-          borderRadius: 12,
+          borderRadius: 9999,
           textDecoration: 'none',
-          fontWeight: 600,
+          fontWeight: 700,
           fontSize: 16,
         }}
       >
-        Get Freeport
+        Download Freeport
       </a>
+      <p style={{
+        marginTop: 48,
+        color: '#71767b',
+        fontSize: 14,
+      }}>
+        Available on iOS
+      </p>
     </div>
   );
 }

@@ -11,14 +11,16 @@ export async function GET(request: NextRequest) {
   const handle = searchParams.get('h') || 'trader';
   const content = searchParams.get('c') || '';
 
-  const actionText = action === 'SELL' ? 'Sell' : 'Buy';
-  const actionColor = action === 'SELL' ? '#ef4444' : '#22c55e';
-  const actionEmoji = action === 'SELL' ? '📉' : '📈';
+  const isSell = action === 'SELL';
+  const actionText = isSell ? 'Sell' : 'Buy';
 
   // Truncate content for display
-  const displayContent = content.length > 180
-    ? content.slice(0, 180) + '...'
+  const displayContent = content.length > 160
+    ? content.slice(0, 160) + '...'
     : content;
+
+  // Fetch logo
+  const logoUrl = new URL('/logo.png', request.url).toString();
 
   return new ImageResponse(
     (
@@ -28,87 +30,171 @@ export async function GET(request: NextRequest) {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: '#0d0d0e',
-          padding: 60,
+          backgroundColor: '#000000',
+          padding: 0,
         }}
       >
-        {/* Action Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 16,
-          }}
-        >
-          <span style={{ fontSize: 48 }}>{actionEmoji}</span>
-          <span
-            style={{
-              fontSize: 56,
-              fontWeight: 700,
-              color: actionColor,
-            }}
-          >
-            {actionText} {ticker}
-          </span>
-        </div>
-
-        {/* Quote Content */}
+        {/* Main Card */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            marginTop: 40,
             flex: 1,
+            margin: 32,
+            padding: 40,
+            backgroundColor: '#16181c',
+            borderRadius: 16,
+            border: '1px solid #2f3336',
           }}
         >
-          <span
+          {/* Header: Logo + Action + Ticker */}
+          <div
             style={{
-              fontSize: 28,
-              color: '#4d91f0',
-              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: 24,
             }}
           >
-            @{handle}
-          </span>
-          <p
-            style={{
-              fontSize: 36,
-              color: '#e5e7eb',
-              lineHeight: 1.4,
-              marginTop: 16,
-            }}
-          >
-            "{displayContent}"
-          </p>
-        </div>
+            {/* Freeport Logo */}
+            <img
+              src={logoUrl}
+              width={48}
+              height={48}
+              style={{
+                marginRight: 16,
+                borderRadius: 8,
+              }}
+            />
+            {/* Action Badge */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '8px 20px',
+                borderRadius: 8,
+                backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+                marginRight: 16,
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: isSell ? '#ef4444' : '#22c55e',
+                }}
+              >
+                {actionText}
+              </span>
+            </div>
+            {/* Ticker */}
+            <span
+              style={{
+                fontSize: 42,
+                fontWeight: 700,
+                color: '#e7e9ea',
+              }}
+            >
+              {ticker}
+            </span>
+          </div>
 
-        {/* Footer Branding */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderTop: '1px solid #374151',
-            paddingTop: 24,
-          }}
-        >
-          <span
+          {/* Quote Section */}
+          <div
             style={{
-              fontSize: 32,
-              fontWeight: 700,
-              color: '#ffffff',
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              paddingLeft: 20,
+              borderLeft: '3px solid #2f3336',
             }}
           >
-            Freeport
-          </span>
-          <span
+            {/* Handle */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: 12,
+              }}
+            >
+              {/* Avatar placeholder */}
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 18,
+                  backgroundColor: '#2f3336',
+                  marginRight: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span style={{ fontSize: 18, color: '#71767b' }}>
+                  {handle.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <span
+                style={{
+                  fontSize: 24,
+                  color: '#71767b',
+                  fontWeight: 500,
+                }}
+              >
+                @{handle}
+              </span>
+            </div>
+
+            {/* Content */}
+            <p
+              style={{
+                fontSize: 32,
+                color: '#e7e9ea',
+                lineHeight: 1.4,
+                margin: 0,
+              }}
+            >
+              {displayContent}
+            </p>
+          </div>
+
+          {/* Footer */}
+          <div
             style={{
-              fontSize: 24,
-              color: '#6b7280',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: 24,
+              paddingTop: 20,
+              borderTop: '1px solid #2f3336',
             }}
           >
-            freeport.app
-          </span>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 26,
+                  fontWeight: 700,
+                  color: '#e7e9ea',
+                  letterSpacing: '-0.5px',
+                }}
+              >
+                Freeport
+              </span>
+            </div>
+            <span
+              style={{
+                fontSize: 20,
+                color: '#71767b',
+              }}
+            >
+              Trade on Freeport →
+            </span>
+          </div>
         </div>
       </div>
     ),
