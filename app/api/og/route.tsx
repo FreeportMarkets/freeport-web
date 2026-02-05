@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
           backgroundColor: '#ffffff',
         }}
       >
-        {hasImage ? (
+        {hasImage && (
           <img
             src={imageUrl}
             style={{
@@ -32,13 +32,6 @@ export async function GET(request: NextRequest) {
               height: '100%',
               objectFit: 'cover',
             }}
-          />
-        ) : (
-          <img
-            src={logoUrl}
-            width={400}
-            height={400}
-            style={{ objectFit: 'contain' }}
           />
         )}
       </div>

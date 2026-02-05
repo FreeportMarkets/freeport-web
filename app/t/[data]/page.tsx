@@ -35,8 +35,9 @@ export async function generateMetadata({ params }: { params: { data: string } })
 
   // og:title contains ALL text - iMessage renders this below the image
   // Format: tweet content + @handle + action
-  const displayContent = trade.c.length > 160 ? trade.c.slice(0, 160) + '...' : trade.c;
-  const title = `${displayContent}\n@${trade.h} · ${action} ${trade.t} on Freeport`;
+  // Truncate at ~100 chars since it renders as bold text
+  const displayContent = trade.c.length > 100 ? trade.c.slice(0, 100) + '...' : trade.c;
+  const title = `${displayContent}\n\n@${trade.h} · ${action} ${trade.t} on Freeport`;
   const description = 'Trade smarter with Freeport';
 
   // OG image is just the visual (logo or trade image)
