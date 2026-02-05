@@ -38,11 +38,11 @@ export async function generateMetadata({ params }: { params: { data: string } })
   // og:description = author + action
   const description = `@${trade.h} · ${action} ${trade.t} on Freeport`;
 
-  // Build OG image URL with all params (text embedded in image)
+  // Build OG image URL - just pass image if available
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com';
-  let ogImageUrl = `${baseUrl}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 180))}`;
+  let ogImageUrl = `${baseUrl}/api/og`;
   if (trade.i) {
-    ogImageUrl += `&i=${encodeURIComponent(trade.i)}`;
+    ogImageUrl += `?i=${encodeURIComponent(trade.i)}`;
   }
 
   return {
