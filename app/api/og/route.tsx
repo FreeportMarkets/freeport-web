@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
 
   // OG image is ONLY the visual - no embedded text
   // All text goes in og:title and iMessage renders it below
+  // IMPORTANT: Must always have an image or iMessage shows tiny compact card
   return new ImageResponse(
     (
       <div
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
           backgroundColor: '#ffffff',
         }}
       >
-        {hasImage && (
+        {hasImage ? (
           <img
             src={imageUrl}
             style={{
@@ -32,6 +33,13 @@ export async function GET(request: NextRequest) {
               height: '100%',
               objectFit: 'cover',
             }}
+          />
+        ) : (
+          <img
+            src={logoUrl}
+            width={400}
+            height={400}
+            style={{ objectFit: 'contain' }}
           />
         )}
       </div>

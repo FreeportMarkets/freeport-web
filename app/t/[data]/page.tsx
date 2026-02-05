@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { data: string } })
   const hasImage = trade.i && trade.i.length > 0;
   const maxLength = hasImage ? 100 : 200;
   const displayContent = trade.c.length > maxLength ? trade.c.slice(0, maxLength) + '...' : trade.c;
-  const title = `${displayContent}\n\n@${trade.h} · ${action} ${trade.t} on Freeport`;
+  const title = `${displayContent}\n@${trade.h} · ${action} ${trade.t} on Freeport`;
   const description = 'Trade smarter with Freeport';
 
   // OG image is just the visual (logo or trade image)
