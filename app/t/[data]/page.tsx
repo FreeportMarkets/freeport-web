@@ -81,31 +81,41 @@ export default function TradePage({ params, searchParams }: {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        {/* Header */}
-        <div style={styles.header}>
-          <div style={{
-            ...styles.actionBadge,
-            backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
-          }}>
-            <span style={{
-              ...styles.actionText,
-              color: isSell ? '#ef4444' : '#22c55e',
-            }}>
-              {action}
-            </span>
+        {/* Brand Header */}
+        <div style={styles.brandHeader}>
+          <div style={styles.logoContainer}>
+            <img src="/logo-boat.png" alt="Freeport" width={18} height={18} style={{ objectFit: 'contain' }} />
           </div>
-          <span style={styles.ticker}>{trade.t}</span>
+          <span style={styles.brandName}>Freeport</span>
         </div>
 
-        {/* Quote */}
-        <div style={styles.quoteSection}>
-          <div style={styles.handleRow}>
-            <div style={styles.avatar}>
-              {trade.h.charAt(0).toUpperCase()}
+        {/* Trade Info */}
+        <div style={styles.tradeSection}>
+          <div style={styles.tradeHeader}>
+            <div style={{
+              ...styles.actionBadge,
+              backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+            }}>
+              <span style={{
+                ...styles.actionText,
+                color: isSell ? '#ef4444' : '#22c55e',
+              }}>
+                {action}
+              </span>
             </div>
-            <span style={styles.handle}>@{trade.h}</span>
+            <span style={styles.ticker}>{trade.t}</span>
           </div>
-          <p style={styles.content}>{trade.c}</p>
+
+          {/* Quote */}
+          <div style={styles.quoteSection}>
+            <div style={styles.handleRow}>
+              <div style={styles.avatar}>
+                {trade.h.charAt(0).toUpperCase()}
+              </div>
+              <span style={styles.handle}>@{trade.h}</span>
+            </div>
+            <p style={styles.content}>{trade.c}</p>
+          </div>
         </div>
 
         {/* CTA */}
@@ -122,16 +132,6 @@ export default function TradePage({ params, searchParams }: {
           >
             Get Freeport for iOS
           </a>
-        </div>
-
-        {/* Branding */}
-        <div style={styles.branding}>
-          <div style={styles.brandingRow}>
-            <div style={styles.logoContainer}>
-              <img src="/logo-boat.png" alt="Freeport" width={18} height={18} style={{ objectFit: 'contain' }} />
-            </div>
-            <span style={styles.brandName}>Freeport</span>
-          </div>
           <span style={styles.tagline}>Trade smarter with real-time signals</span>
         </div>
       </div>
@@ -158,10 +158,21 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: 24,
     border: '1px solid #2f3336',
   },
-  header: {
+  brandHeader: {
     display: 'flex',
     alignItems: 'center',
-    marginBottom: 20,
+    gap: 10,
+    paddingBottom: 16,
+    marginBottom: 16,
+    borderBottom: '1px solid #2f3336',
+  },
+  tradeSection: {
+    marginBottom: 24,
+  },
+  tradeHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 16,
     gap: 12,
   },
   actionBadge: {
@@ -235,20 +246,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontWeight: 500,
     fontSize: 14,
   },
-  branding: {
-    marginTop: 24,
-    paddingTop: 20,
-    borderTop: '1px solid #2f3336',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 8,
-  },
-  brandingRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 8,
-  },
   logoContainer: {
     width: 28,
     height: 28,
@@ -260,12 +257,13 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   brandName: {
     fontWeight: 600,
-    fontSize: 16,
+    fontSize: 15,
     color: '#e7e9ea',
   },
   tagline: {
     fontSize: 13,
-    color: '#6b7280',
+    color: '#52525b',
+    marginTop: 4,
   },
   errorTitle: {
     fontSize: 24,
