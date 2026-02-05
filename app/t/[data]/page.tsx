@@ -64,10 +64,7 @@ export default function TradePage({ params, searchParams }: {
   if (!trade) {
     return (
       <div style={styles.container}>
-        <div style={styles.content}>
-          <div style={styles.logoMark}>
-            <img src="/logo-boat.png" alt="Freeport" width={32} height={32} style={{ objectFit: 'contain' }} />
-          </div>
+        <div style={styles.card}>
           <h1 style={styles.errorTitle}>Trade not found</h1>
           <p style={styles.errorText}>This trade may have expired or the link is invalid.</p>
           <a href="https://apps.apple.com/app/freeport/id6745072874" style={styles.ctaButton}>
@@ -79,50 +76,64 @@ export default function TradePage({ params, searchParams }: {
   }
 
   const isSell = trade.a === 'SELL';
-  const action = isSell ? 'SELL' : 'BUY';
+  const action = isSell ? 'Sell' : 'Buy';
 
   return (
     <div style={styles.container}>
-      <div style={styles.content}>
-        {/* Logo */}
-        <div style={styles.logoMark}>
-          <img src="/logo-boat.png" alt="Freeport" width={32} height={32} style={{ objectFit: 'contain' }} />
-        </div>
-
-        {/* Trade Signal */}
-        <div style={styles.signalCard}>
-          {/* Action + Ticker */}
-          <div style={styles.tradeHeader}>
+      <div style={styles.card}>
+        {/* Header */}
+        <div style={styles.header}>
+          <div style={{
+            ...styles.actionBadge,
+            backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+          }}>
             <span style={{
-              ...styles.actionBadge,
-              backgroundColor: isSell ? '#2d1f1f' : '#1a2e1a',
-              color: isSell ? '#f87171' : '#4ade80',
+              ...styles.actionText,
+              color: isSell ? '#ef4444' : '#22c55e',
             }}>
               {action}
             </span>
-            <span style={styles.ticker}>{trade.t}</span>
           </div>
+          <span style={styles.ticker}>{trade.t}</span>
+        </div>
 
-          {/* Quote */}
-          <div style={styles.quote}>
+        {/* Quote */}
+        <div style={styles.quoteSection}>
+          <div style={styles.handleRow}>
+            <div style={styles.avatar}>
+              {trade.h.charAt(0).toUpperCase()}
+            </div>
             <span style={styles.handle}>@{trade.h}</span>
-            <p style={styles.quoteText}>"{trade.c}"</p>
           </div>
+          <p style={styles.content}>{trade.c}</p>
         </div>
 
         {/* CTA */}
-        <a
-          href={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`}
-          style={styles.ctaButton}
-        >
-          View Trade
-        </a>
-        <a
-          href="https://apps.apple.com/app/freeport/id6745072874"
-          style={styles.ctaLink}
-        >
-          Get Freeport for iOS
-        </a>
+        <div style={styles.ctaContainer}>
+          <a
+            href={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`}
+            style={styles.ctaButton}
+          >
+            View Trade
+          </a>
+          <a
+            href="https://apps.apple.com/app/freeport/id6745072874"
+            style={styles.ctaSecondary}
+          >
+            Get Freeport for iOS
+          </a>
+        </div>
+
+        {/* Branding */}
+        <div style={styles.branding}>
+          <div style={styles.brandingRow}>
+            <div style={styles.logoContainer}>
+              <img src="/logo-boat.png" alt="Freeport" width={18} height={18} style={{ objectFit: 'contain' }} />
+            </div>
+            <span style={styles.brandName}>Freeport</span>
+          </div>
+          <span style={styles.tagline}>Trade smarter with real-time signals</span>
+        </div>
       </div>
     </div>
   );
@@ -130,108 +141,142 @@ export default function TradePage({ params, searchParams }: {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    minHeight: '100dvh',
+    height: '100dvh',
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '24px 20px',
+    padding: 16,
     backgroundColor: '#000000',
     boxSizing: 'border-box',
     overflow: 'hidden',
   },
-  content: {
+  card: {
+    maxWidth: 400,
     width: '100%',
-    maxWidth: 360,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    backgroundColor: '#16181c',
+    borderRadius: 20,
+    padding: 24,
+    border: '1px solid #2f3336',
   },
-  logoMark: {
-    width: 56,
-    height: 56,
-    borderRadius: 14,
-    backgroundColor: '#ffffff',
+  header: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 32,
-  },
-  signalCard: {
-    width: '100%',
-    backgroundColor: '#111111',
-    borderRadius: 16,
-    padding: '24px',
-    marginBottom: 32,
-  },
-  tradeHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
     marginBottom: 20,
+    gap: 12,
   },
   actionBadge: {
-    padding: '6px 12px',
-    borderRadius: 6,
-    fontSize: 13,
+    padding: '8px 16px',
+    borderRadius: 8,
+  },
+  actionText: {
+    fontSize: 15,
     fontWeight: 700,
-    letterSpacing: '0.5px',
   },
   ticker: {
     fontSize: 32,
     fontWeight: 700,
-    color: '#ffffff',
-    letterSpacing: '-0.5px',
+    color: '#e7e9ea',
   },
-  quote: {
-    borderLeft: '2px solid #333333',
+  quoteSection: {
     paddingLeft: 16,
+    borderLeft: '3px solid #3b82f6',
+    marginBottom: 24,
+  },
+  handleRow: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 10,
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#2f3336',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#71767b',
+    fontSize: 14,
+    fontWeight: 600,
   },
   handle: {
-    color: '#666666',
-    fontSize: 14,
+    color: '#71767b',
+    fontSize: 15,
     fontWeight: 500,
-    marginBottom: 6,
-    display: 'block',
   },
-  quoteText: {
-    color: '#e5e5e5',
-    fontSize: 16,
+  content: {
+    color: '#e7e9ea',
+    fontSize: 17,
     lineHeight: 1.5,
     margin: 0,
-    fontStyle: 'italic',
+  },
+  ctaContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 8,
   },
   ctaButton: {
-    width: '100%',
-    display: 'block',
-    padding: '16px 24px',
+    display: 'inline-block',
+    padding: '14px 48px',
     backgroundColor: '#ffffff',
     color: '#000000',
-    borderRadius: 12,
+    borderRadius: 50,
     textDecoration: 'none',
     fontWeight: 600,
     fontSize: 16,
     textAlign: 'center',
-    marginBottom: 16,
   },
-  ctaLink: {
-    color: '#666666',
-    fontSize: 14,
+  ctaSecondary: {
+    color: '#6b7280',
     textDecoration: 'none',
     fontWeight: 500,
+    fontSize: 14,
+  },
+  branding: {
+    marginTop: 24,
+    paddingTop: 20,
+    borderTop: '1px solid #2f3336',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 8,
+  },
+  brandingRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+  },
+  logoContainer: {
+    width: 28,
+    height: 28,
+    borderRadius: 6,
+    backgroundColor: '#ffffff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  brandName: {
+    fontWeight: 600,
+    fontSize: 16,
+    color: '#e7e9ea',
+  },
+  tagline: {
+    fontSize: 13,
+    color: '#6b7280',
   },
   errorTitle: {
-    fontSize: 20,
-    fontWeight: 600,
-    color: '#ffffff',
+    fontSize: 24,
+    fontWeight: 700,
+    color: '#e7e9ea',
     marginBottom: 8,
     marginTop: 0,
-    textAlign: 'center',
   },
   errorText: {
-    fontSize: 14,
-    color: '#666666',
-    marginBottom: 24,
-    textAlign: 'center',
+    fontSize: 15,
+    color: '#71767b',
+    marginBottom: 20,
   },
 };
