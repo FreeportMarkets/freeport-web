@@ -111,50 +111,55 @@ export default function TradePage({ params, searchParams }: {
       <h1 style={styles.title}>Freeport</h1>
       <p style={styles.subtitle}>Trade smarter with real-time signals</p>
 
-      {/* Action + Token */}
-      <div style={styles.tradeRow}>
-        <span style={{
-          ...styles.actionBadge,
-          backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
-          color: isSell ? '#ef4444' : '#22c55e',
-        }}>
-          {action}
-        </span>
-        <img
-          src={tokenLogo}
-          alt={trade.t}
-          width={32}
-          height={32}
-          style={{ borderRadius: 16, objectFit: 'cover' }}
-        />
-        <span style={styles.ticker}>{trade.t}</span>
-      </div>
-
-      {/* Tweet Quote */}
-      <div style={styles.quoteBox}>
-        <div style={styles.handleRow}>
+      {/* Trade Card */}
+      <div style={styles.tradeCard}>
+        {/* Header: Action + Token */}
+        <div style={styles.cardHeader}>
+          <span style={{
+            ...styles.actionText,
+            color: isSell ? '#ef4444' : '#22c55e',
+          }}>
+            {action}
+          </span>
           <img
-            src={handleAvatar}
-            alt={trade.h}
-            width={36}
-            height={36}
-            style={{ borderRadius: 18, objectFit: 'cover' }}
+            src={tokenLogo}
+            alt={trade.t}
+            width={24}
+            height={24}
+            style={{ borderRadius: 12, objectFit: 'cover' }}
           />
-          <span style={styles.handle}>@{trade.h}</span>
+          <span style={styles.ticker}>{trade.t}</span>
         </div>
-        <p style={styles.content}>{trade.c}</p>
-      </div>
 
-      {/* Trade Image (if present) */}
-      {trade.i && (
-        <div style={styles.imageContainer}>
-          <img
-            src={trade.i}
-            alt="Trade"
-            style={styles.tradeImage}
-          />
+        {/* Divider */}
+        <div style={styles.divider} />
+
+        {/* Quote */}
+        <div style={styles.quoteSection}>
+          <div style={styles.handleRow}>
+            <img
+              src={handleAvatar}
+              alt={trade.h}
+              width={28}
+              height={28}
+              style={{ borderRadius: 14, objectFit: 'cover' }}
+            />
+            <span style={styles.handle}>@{trade.h}</span>
+          </div>
+          <p style={styles.content}>{trade.c}</p>
         </div>
-      )}
+
+        {/* Trade Image (if present) */}
+        {trade.i && (
+          <div style={styles.imageContainer}>
+            <img
+              src={trade.i}
+              alt="Trade"
+              style={styles.tradeImage}
+            />
+          </div>
+        )}
+      </div>
 
       {/* CTA */}
       <a
@@ -203,66 +208,71 @@ const styles: { [key: string]: React.CSSProperties } = {
   subtitle: {
     color: '#a1a1aa',
     fontSize: 18,
-    marginBottom: 32,
+    marginBottom: 28,
     marginTop: 0,
     textAlign: 'center',
     maxWidth: 320,
     lineHeight: 1.5,
   },
-  tradeRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 24,
-  },
-  actionBadge: {
-    padding: '8px 16px',
-    borderRadius: 8,
-    fontWeight: 700,
-    fontSize: 16,
-  },
-  ticker: {
-    fontSize: 28,
-    fontWeight: 700,
-    color: '#ffffff',
-    letterSpacing: '-0.5px',
-  },
-  quoteBox: {
+  tradeCard: {
     backgroundColor: '#18181b',
     borderRadius: 16,
     padding: 20,
     maxWidth: 360,
     width: '100%',
-    marginBottom: 24,
-    borderLeft: '3px solid #3b82f6',
+    marginBottom: 28,
+    border: '1px solid #27272a',
+  },
+  cardHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+  },
+  actionText: {
+    fontWeight: 600,
+    fontSize: 15,
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  ticker: {
+    fontSize: 18,
+    fontWeight: 700,
+    color: '#ffffff',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#27272a',
+    margin: '16px 0',
+  },
+  quoteSection: {
+    paddingLeft: 12,
+    borderLeft: '2px solid #3b82f6',
   },
   handleRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
+    gap: 10,
+    marginBottom: 8,
   },
   handle: {
     color: '#71767b',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 500,
   },
   content: {
     color: '#e7e9ea',
-    fontSize: 16,
+    fontSize: 15,
     lineHeight: 1.5,
     margin: 0,
   },
   imageContainer: {
-    maxWidth: 360,
-    width: '100%',
-    marginBottom: 24,
-    borderRadius: 12,
+    marginTop: 16,
+    borderRadius: 10,
     overflow: 'hidden',
   },
   tradeImage: {
     width: '100%',
-    maxHeight: 200,
+    maxHeight: 180,
     objectFit: 'cover',
   },
   ctaButton: {
