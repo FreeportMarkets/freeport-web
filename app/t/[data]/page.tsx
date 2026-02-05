@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: { data: string } })
 
   // og:title contains ALL text - iMessage renders this below the image
   // Content is already truncated with "..." in share.js
-  const title = `${trade.c}\n\n@${trade.h} · ${action} ${trade.t} on Freeport`;
+  const title = `${trade.c}\n@${trade.h} · ${action} ${trade.t} on Freeport`;
   const description = 'Trade smarter with Freeport';
 
   // OG image is just the visual (logo or trade image)
