@@ -33,16 +33,16 @@ export async function generateMetadata({ params }: { params: { data: string } })
 
   const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
 
-  // og:title = tweet content (this shows as main text below image in iMessage)
-  const title = trade.c.length > 200 ? trade.c.slice(0, 200) + '...' : trade.c;
-  // og:description = author + action (shows below title in iMessage)
+  // og:title = tweet content (iMessage shows this below the image)
+  const title = trade.c.length > 150 ? trade.c.slice(0, 150) + '...' : trade.c;
+  // og:description = author + action
   const description = `@${trade.h} · ${action} ${trade.t} on Freeport`;
 
-  // Build OG image URL with all params (text embedded in image like X)
+  // Build OG image URL - just pass image if available
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com';
-  let ogImageUrl = `${baseUrl}/api/og?a=${encodeURIComponent(trade.a)}&t=${encodeURIComponent(trade.t)}&h=${encodeURIComponent(trade.h)}&c=${encodeURIComponent(trade.c.slice(0, 200))}`;
+  let ogImageUrl = `${baseUrl}/api/og`;
   if (trade.i) {
-    ogImageUrl += `&i=${encodeURIComponent(trade.i)}`;
+    ogImageUrl += `?i=${encodeURIComponent(trade.i)}`;
   }
 
   return {
