@@ -85,11 +85,11 @@ export default function TradePage({ params, searchParams }: {
   if (!trade) {
     return (
       <div style={styles.container}>
-        <div style={styles.logoBox}>
-          <img src="/logo-boat.png" alt="Freeport" width={56} height={56} style={{ objectFit: 'contain' }} />
+        <div style={styles.brandingSmall}>
+          <img src="/logo-boat.png" alt="Freeport" width={32} height={32} style={{ objectFit: 'contain' }} />
+          <span style={styles.brandName}>Freeport</span>
         </div>
-        <h1 style={styles.title}>Freeport</h1>
-        <p style={styles.subtitle}>Trade not found</p>
+        <p style={styles.errorText}>Trade not found</p>
         <a href="https://apps.apple.com/app/freeport/id6745072874" style={styles.ctaButton}>
           Download on iOS
         </a>
@@ -106,61 +106,62 @@ export default function TradePage({ params, searchParams }: {
 
   return (
     <div style={styles.container}>
-      {/* Logo */}
-      <div style={styles.logoBox}>
-        <img src="/logo-boat.png" alt="Freeport" width={56} height={56} style={{ objectFit: 'contain' }} />
-      </div>
-
-      {/* Title + Slogan */}
-      <h1 style={styles.title}>Freeport</h1>
-      <p style={styles.subtitle}>Trade smarter with real-time signals</p>
-
-      {/* Trade Card */}
+      {/* Trade Card - Hero */}
       <div style={styles.tradeCard}>
-        {/* Header: Action + Token */}
-        <div style={styles.cardHeader}>
-          <span style={{
-            ...styles.actionText,
-            color: isSell ? '#ef4444' : '#22c55e',
+        {/* Action Badge + Token */}
+        <div style={styles.cardTop}>
+          <div style={{
+            ...styles.actionBadge,
+            backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
           }}>
-            {action}
-          </span>
+            <span style={{
+              ...styles.actionText,
+              color: isSell ? '#ef4444' : '#22c55e',
+            }}>
+              {action}
+            </span>
+          </div>
+        </div>
+
+        {/* Token Logo + Ticker - Centered */}
+        <div style={styles.tokenSection}>
           <img
             src={tokenLogo}
             alt={trade.t}
-            width={24}
-            height={24}
-            style={{ borderRadius: 12, objectFit: 'cover' }}
+            width={64}
+            height={64}
+            style={{ borderRadius: 32, objectFit: 'cover', border: '2px solid #27272a' }}
           />
           <span style={styles.ticker}>{trade.t}</span>
         </div>
 
-        {/* Divider */}
-        <div style={styles.divider} />
-
-        {/* Quote */}
-        <div style={styles.quoteSection}>
+        {/* Quote Block */}
+        <div style={styles.quoteBlock}>
           <div style={styles.handleRow}>
             <img
               src={handleAvatar}
               alt={trade.h}
-              width={28}
-              height={28}
-              style={{ borderRadius: 14, objectFit: 'cover' }}
+              width={32}
+              height={32}
+              style={{ borderRadius: 16, objectFit: 'cover' }}
             />
             <span style={styles.handle}>@{trade.h}</span>
           </div>
           <p style={styles.content}>{trade.c}</p>
         </div>
 
+        {/* CTA inside card */}
+        <ViewTradeButton deepLink={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`} />
       </div>
 
-      {/* CTA */}
-      <ViewTradeButton deepLink={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`} />
-
-      <p style={styles.footer}>
-        Available on the App Store
-      </p>
+      {/* Branding at bottom */}
+      <div style={styles.branding}>
+        <img src="/logo-boat.png" alt="Freeport" width={28} height={28} style={{ objectFit: 'contain' }} />
+        <div style={styles.brandText}>
+          <span style={styles.brandName}>Freeport</span>
+          <span style={styles.tagline}>Trade real-time signals</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -175,97 +176,103 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: 20,
     backgroundColor: '#0a0a0a',
   },
-  logoBox: {
-    width: 88,
-    height: 88,
-    borderRadius: 20,
-    backgroundColor: '#ffffff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 24,
-    padding: 12,
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: 700,
-    color: '#ffffff',
-    marginBottom: 12,
-    marginTop: 0,
-    letterSpacing: '-1px',
-  },
-  subtitle: {
-    color: '#a1a1aa',
-    fontSize: 18,
-    marginBottom: 28,
-    marginTop: 0,
-    textAlign: 'center',
-    maxWidth: 320,
-    lineHeight: 1.5,
-  },
   tradeCard: {
     backgroundColor: '#18181b',
-    borderRadius: 16,
-    padding: 20,
-    maxWidth: 360,
+    borderRadius: 24,
+    padding: 28,
+    maxWidth: 400,
     width: '100%',
-    marginBottom: 28,
     border: '1px solid #27272a',
   },
-  cardHeader: {
+  cardTop: {
     display: 'flex',
-    alignItems: 'center',
-    gap: 10,
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  actionBadge: {
+    padding: '8px 20px',
+    borderRadius: 20,
   },
   actionText: {
-    fontWeight: 600,
-    fontSize: 15,
+    fontWeight: 700,
+    fontSize: 16,
     textTransform: 'uppercase',
-    letterSpacing: '0.5px',
+    letterSpacing: '1px',
+  },
+  tokenSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 12,
+    marginBottom: 24,
   },
   ticker: {
-    fontSize: 18,
-    fontWeight: 700,
+    fontSize: 28,
+    fontWeight: 800,
     color: '#ffffff',
+    letterSpacing: '-0.5px',
   },
-  divider: {
-    height: 1,
-    backgroundColor: '#27272a',
-    margin: '16px 0',
-  },
-  quoteSection: {
-    paddingLeft: 12,
-    borderLeft: '2px solid #3b82f6',
+  quoteBlock: {
+    backgroundColor: '#0f0f10',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+    borderLeft: '3px solid #3b82f6',
   },
   handleRow: {
     display: 'flex',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   handle: {
     color: '#71767b',
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 500,
   },
   content: {
     color: '#e7e9ea',
-    fontSize: 15,
-    lineHeight: 1.5,
+    fontSize: 16,
+    lineHeight: 1.6,
     margin: 0,
+  },
+  branding: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 32,
+  },
+  brandingSmall: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 20,
+  },
+  brandText: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  brandName: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontWeight: 700,
+  },
+  tagline: {
+    color: '#71767b',
+    fontSize: 14,
+  },
+  errorText: {
+    color: '#a1a1aa',
+    fontSize: 18,
+    marginBottom: 24,
   },
   ctaButton: {
     padding: '16px 40px',
-    backgroundColor: '#1d9bf0',
+    backgroundColor: '#3b82f6',
     color: '#fff',
-    borderRadius: 9999,
+    borderRadius: 12,
     textDecoration: 'none',
     fontWeight: 700,
     fontSize: 17,
-  },
-  footer: {
-    marginTop: 56,
-    color: '#52525b',
-    fontSize: 13,
   },
 };

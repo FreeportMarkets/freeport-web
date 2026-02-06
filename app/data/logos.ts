@@ -57,6 +57,7 @@ export const TOKEN_LOGOS: Record<string, string> = {
   ANTHROPIC: '/logos/tokens/anthropic.png',
   SPACEX: '/logos/tokens/spacex.png',
   ANDURIL: '/logos/tokens/anduril.png',
+  POLYMARKET: '/logos/tokens/polymarket.png',
 
   // Commodities
   GOLD: '/logos/tokens/gold.png',
