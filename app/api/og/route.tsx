@@ -101,14 +101,14 @@ export async function GET(request: NextRequest) {
             backgroundColor: '#0A0A0B',
           }}
         >
-          {/* Left: Full Token Logo Panel */}
+          {/* Left: Full Token Logo Panel - black background */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               width: 420,
-              backgroundColor: '#111113',
+              backgroundColor: '#0A0A0B',
             }}
           >
             {tokenLogoUrl ? (
@@ -140,30 +140,30 @@ export async function GET(request: NextRequest) {
             )}
           </div>
 
-          {/* Right: Action + Handle + Content */}
+          {/* Right: Action + Handle + Content - more vertical space */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               flex: 1,
-              padding: '40px 48px',
+              padding: '48px 56px',
               justifyContent: 'center',
             }}
           >
             {/* Action Badge + Ticker */}
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 28 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 36 }}>
               <div
                 style={{
                   display: 'flex',
                   backgroundColor: actionBg,
-                  padding: '10px 24px',
+                  padding: '12px 28px',
                   borderRadius: 8,
-                  marginRight: 20,
+                  marginRight: 24,
                 }}
               >
                 <span
                   style={{
-                    fontSize: 28,
+                    fontSize: 32,
                     fontWeight: 800,
                     color: actionColor,
                     letterSpacing: '1px',
@@ -174,7 +174,7 @@ export async function GET(request: NextRequest) {
               </div>
               <span
                 style={{
-                  fontSize: 44,
+                  fontSize: 52,
                   fontWeight: 800,
                   color: '#FFFFFF',
                 }}
@@ -184,29 +184,29 @@ export async function GET(request: NextRequest) {
             </div>
 
             {/* Handle */}
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 28 }}>
               <img
                 src={avatarUrl}
-                width={48}
-                height={48}
-                style={{ borderRadius: 24, marginRight: 14, objectFit: 'cover' }}
+                width={56}
+                height={56}
+                style={{ borderRadius: 28, marginRight: 16, objectFit: 'cover' }}
               />
-              <span style={{ fontSize: 28, fontWeight: 600, color: '#9ca3af' }}>
+              <span style={{ fontSize: 32, fontWeight: 600, color: '#9ca3af' }}>
                 @{handle}
               </span>
             </div>
 
-            {/* Tweet Content */}
+            {/* Tweet Content - larger text */}
             <div
               style={{
                 display: 'flex',
-                borderLeft: '3px solid #3b82f6',
-                paddingLeft: 20,
+                borderLeft: '4px solid #3b82f6',
+                paddingLeft: 24,
               }}
             >
               <span
                 style={{
-                  fontSize: 24,
+                  fontSize: 30,
                   color: '#e5e7eb',
                   lineHeight: 1.5,
                 }}
