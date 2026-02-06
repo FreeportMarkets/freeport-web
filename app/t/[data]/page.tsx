@@ -35,16 +35,11 @@ export async function generateMetadata({ params }: { params: { data: string } })
 
   const action = trade.a === 'SELL' ? 'Sell' : 'Buy';
 
-  // Truncate content for OG title (iMessage limit ~90 chars)
-  const handleLineLength = trade.h.length + trade.t.length + 20;
-  const maxOgContent = Math.max(30, 85 - handleLineLength);
-  const ogContent = trade.c.length > maxOgContent
-    ? trade.c.slice(0, maxOgContent) + '...'
-    : trade.c;
-
-  // og:title for iMessage preview - truncated
-  const title = `${ogContent}\n@${trade.h} · ${action} ${trade.t} on Freeport`;
-  const description = 'Trade smarter with Freeport';
+  // Simple og:title for iMessage preview
+  const title = trade.i
+    ? `${action} ${trade.t} · @${trade.h} on Freeport`  // Has image - show action
+    : `Trade @${trade.h} signals on Freeport`;          // No image - simple CTA
+  const description = 'Trade real-time signals';
 
   // OG image - pass all trade data so we can render a tweet card if no image
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://share.freeportmarkets.com';
@@ -85,11 +80,11 @@ export default function TradePage({ params, searchParams }: {
   if (!trade) {
     return (
       <div style={styles.container}>
-        <div style={styles.brandingSmall}>
-          <img src="/logo-boat.png" alt="Freeport" width={32} height={32} style={{ objectFit: 'contain' }} />
-          <span style={styles.brandName}>Freeport</span>
+        <div style={styles.logoBox}>
+          <img src="/logo-boat.png" alt="Freeport" width={56} height={56} style={{ objectFit: 'contain' }} />
         </div>
-        <p style={styles.errorText}>Trade not found</p>
+        <h1 style={styles.title}>Freeport</h1>
+        <p style={styles.subtitle}>Trade not found</p>
         <a href="https://apps.apple.com/app/freeport/id6745072874" style={styles.ctaButton}>
           Download on iOS
         </a>
@@ -106,62 +101,61 @@ export default function TradePage({ params, searchParams }: {
 
   return (
     <div style={styles.container}>
-      {/* Trade Card - Hero */}
-      <div style={styles.tradeCard}>
-        {/* Action Badge + Token */}
-        <div style={styles.cardTop}>
-          <div style={{
-            ...styles.actionBadge,
-            backgroundColor: isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)',
-          }}>
-            <span style={{
-              ...styles.actionText,
-              color: isSell ? '#ef4444' : '#22c55e',
-            }}>
-              {action}
-            </span>
-          </div>
-        </div>
+      {/* Logo */}
+      <div style={styles.logoBox}>
+        <img src="/logo-boat.png" alt="Freeport" width={56} height={56} style={{ objectFit: 'contain' }} />
+      </div>
 
-        {/* Token Logo + Ticker - Centered */}
-        <div style={styles.tokenSection}>
+      {/* Title + Slogan */}
+      <h1 style={styles.title}>Freeport</h1>
+      <p style={styles.subtitle}>Trade smarter with real-time signals</p>
+
+      {/* Trade Card */}
+      <div style={styles.tradeCard}>
+        {/* Header: Action + Token */}
+        <div style={styles.cardHeader}>
+          <span style={{
+            ...styles.actionText,
+            color: isSell ? '#ef4444' : '#22c55e',
+          }}>
+            {action}
+          </span>
           <img
             src={tokenLogo}
             alt={trade.t}
-            width={64}
-            height={64}
-            style={{ borderRadius: 32, objectFit: 'cover', border: '2px solid #27272a' }}
+            width={24}
+            height={24}
+            style={{ borderRadius: 12, objectFit: 'cover' }}
           />
           <span style={styles.ticker}>{trade.t}</span>
         </div>
 
-        {/* Quote Block */}
-        <div style={styles.quoteBlock}>
+        {/* Divider */}
+        <div style={styles.divider} />
+
+        {/* Quote */}
+        <div style={styles.quoteSection}>
           <div style={styles.handleRow}>
             <img
               src={handleAvatar}
               alt={trade.h}
-              width={32}
-              height={32}
-              style={{ borderRadius: 16, objectFit: 'cover' }}
+              width={28}
+              height={28}
+              style={{ borderRadius: 14, objectFit: 'cover' }}
             />
             <span style={styles.handle}>@{trade.h}</span>
           </div>
           <p style={styles.content}>{trade.c}</p>
         </div>
 
-        {/* CTA inside card */}
-        <ViewTradeButton deepLink={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`} />
       </div>
 
-      {/* Branding at bottom */}
-      <div style={styles.branding}>
-        <img src="/logo-boat.png" alt="Freeport" width={28} height={28} style={{ objectFit: 'contain' }} />
-        <div style={styles.brandText}>
-          <span style={styles.brandName}>Freeport</span>
-          <span style={styles.tagline}>Trade real-time signals</span>
-        </div>
-      </div>
+      {/* CTA */}
+      <ViewTradeButton deepLink={`freeport://t/${params.data}${ref ? `?ref=${ref}` : ''}`} />
+
+      <p style={styles.footer}>
+        Available on the App Store
+      </p>
     </div>
   );
 }
@@ -176,103 +170,97 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: 20,
     backgroundColor: '#0a0a0a',
   },
+  logoBox: {
+    width: 88,
+    height: 88,
+    borderRadius: 20,
+    backgroundColor: '#ffffff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+    padding: 12,
+  },
+  title: {
+    fontSize: 48,
+    fontWeight: 700,
+    color: '#ffffff',
+    marginBottom: 12,
+    marginTop: 0,
+    letterSpacing: '-1px',
+  },
+  subtitle: {
+    color: '#a1a1aa',
+    fontSize: 18,
+    marginBottom: 28,
+    marginTop: 0,
+    textAlign: 'center',
+    maxWidth: 320,
+    lineHeight: 1.5,
+  },
   tradeCard: {
     backgroundColor: '#18181b',
-    borderRadius: 24,
-    padding: 28,
-    maxWidth: 400,
+    borderRadius: 16,
+    padding: 20,
+    maxWidth: 360,
     width: '100%',
+    marginBottom: 28,
     border: '1px solid #27272a',
   },
-  cardTop: {
+  cardHeader: {
     display: 'flex',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  actionBadge: {
-    padding: '8px 20px',
-    borderRadius: 20,
+    alignItems: 'center',
+    gap: 10,
   },
   actionText: {
-    fontWeight: 700,
-    fontSize: 16,
+    fontWeight: 600,
+    fontSize: 15,
     textTransform: 'uppercase',
-    letterSpacing: '1px',
-  },
-  tokenSection: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 24,
+    letterSpacing: '0.5px',
   },
   ticker: {
-    fontSize: 28,
-    fontWeight: 800,
+    fontSize: 18,
+    fontWeight: 700,
     color: '#ffffff',
-    letterSpacing: '-0.5px',
   },
-  quoteBlock: {
-    backgroundColor: '#0f0f10',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 24,
-    borderLeft: '3px solid #3b82f6',
+  divider: {
+    height: 1,
+    backgroundColor: '#27272a',
+    margin: '16px 0',
+  },
+  quoteSection: {
+    paddingLeft: 12,
+    borderLeft: '2px solid #3b82f6',
   },
   handleRow: {
     display: 'flex',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   handle: {
     color: '#71767b',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: 500,
   },
   content: {
     color: '#e7e9ea',
-    fontSize: 16,
-    lineHeight: 1.6,
+    fontSize: 15,
+    lineHeight: 1.5,
     margin: 0,
-  },
-  branding: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    marginTop: 32,
-  },
-  brandingSmall: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 20,
-  },
-  brandText: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  brandName: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 700,
-  },
-  tagline: {
-    color: '#71767b',
-    fontSize: 14,
-  },
-  errorText: {
-    color: '#a1a1aa',
-    fontSize: 18,
-    marginBottom: 24,
   },
   ctaButton: {
     padding: '16px 40px',
-    backgroundColor: '#3b82f6',
+    backgroundColor: '#1d9bf0',
     color: '#fff',
-    borderRadius: 12,
+    borderRadius: 9999,
     textDecoration: 'none',
     fontWeight: 700,
     fontSize: 17,
+  },
+  footer: {
+    marginTop: 56,
+    color: '#52525b',
+    fontSize: 13,
   },
 };

@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
-import { HANDLE_ICONS } from '../../data/logos';
+import { HANDLE_ICONS, TOKEN_LOGOS } from '../../data/logos';
 
 export const runtime = 'edge';
 
@@ -13,6 +13,21 @@ function getHandleAvatarUrl(handle: string, baseUrl: string): string {
   // Fallback to UI avatars
   const initial = handle.replace('@', '').charAt(0).toUpperCase();
   return `https://ui-avatars.com/api/?name=${initial}&background=4d91f0&color=fff&size=88&bold=true`;
+}
+
+function getTokenLogoUrl(ticker: string, baseUrl: string): string | null {
+  if (!ticker) return null;
+  const upper = ticker.toUpperCase();
+
+  if (TOKEN_LOGOS[upper]) return `${baseUrl}${TOKEN_LOGOS[upper]}`;
+
+  // Try stripping "ON" suffix (Ondo tokens)
+  if (upper.endsWith('ON') && upper.length > 2) {
+    const withoutOn = upper.slice(0, -2);
+    if (TOKEN_LOGOS[withoutOn]) return `${baseUrl}${TOKEN_LOGOS[withoutOn]}`;
+  }
+
+  return null;
 }
 
 export async function GET(request: NextRequest) {
@@ -60,17 +75,20 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // If we have trade data but no image, render a trade card
+  // If we have trade data but no image, render a clean side-by-side preview
+  // REVERT NOTE: This is the side-by-side layout with full token logo on left,
+  // action+ticker+handle+content on right. No tagline text.
   if (hasTradeData) {
     const isSell = action === 'SELL';
-    const actionText = isSell ? 'SHORT' : 'BUY';
-    const actionBgColor = isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)';
-    const actionTextColor = isSell ? '#ef4444' : '#22c55e';
+    const actionText = isSell ? 'SELL' : 'BUY';
+    const actionColor = isSell ? '#ef4444' : '#22c55e';
+    const actionBg = isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)';
     const avatarUrl = getHandleAvatarUrl(handle, baseUrl);
+    const tokenLogoUrl = getTokenLogoUrl(ticker, baseUrl);
 
-    // More content for OG image - up to 400 chars
-    const displayContent = content.length > 400
-      ? content.slice(0, 400) + '...'
+    // Truncate content for readability
+    const displayContent = content.length > 200
+      ? content.slice(0, 200) + '...'
       : content;
 
     return new ImageResponse(
@@ -80,37 +98,75 @@ export async function GET(request: NextRequest) {
             width: '100%',
             height: '100%',
             display: 'flex',
-            flexDirection: 'column',
             backgroundColor: '#0A0A0B',
-            padding: '40px 48px',
           }}
         >
-          {/* Top Bar: Action Badge + Ticker on left, Logo on right */}
+          {/* Left: Full Token Logo Panel */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: 32,
+              justifyContent: 'center',
+              width: 420,
+              backgroundColor: '#111113',
+            }}
+          >
+            {tokenLogoUrl ? (
+              <img
+                src={tokenLogoUrl}
+                width={320}
+                height={320}
+                style={{
+                  borderRadius: 160,
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: 320,
+                  height: 320,
+                  borderRadius: 160,
+                  backgroundColor: '#1f2937',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span style={{ fontSize: 80, fontWeight: 700, color: '#9ca3af' }}>
+                  {ticker.slice(0, 3)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Right: Action + Handle + Content */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 1,
+              padding: '40px 48px',
+              justifyContent: 'center',
             }}
           >
             {/* Action Badge + Ticker */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 28 }}>
               <div
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
-                  backgroundColor: actionBgColor,
-                  padding: '8px 20px',
+                  backgroundColor: actionBg,
+                  padding: '10px 24px',
                   borderRadius: 8,
+                  marginRight: 20,
                 }}
               >
                 <span
                   style={{
-                    fontSize: 24,
+                    fontSize: 28,
                     fontWeight: 800,
-                    color: actionTextColor,
-                    letterSpacing: '0.5px',
+                    color: actionColor,
+                    letterSpacing: '1px',
                   }}
                 >
                   {actionText}
@@ -118,8 +174,8 @@ export async function GET(request: NextRequest) {
               </div>
               <span
                 style={{
-                  fontSize: 36,
-                  fontWeight: 700,
+                  fontSize: 44,
+                  fontWeight: 800,
                   color: '#FFFFFF',
                 }}
               >
@@ -127,75 +183,32 @@ export async function GET(request: NextRequest) {
               </span>
             </div>
 
-            {/* Freeport Logo - Top Right */}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img
-                src={`${baseUrl}/logo-boat.png`}
-                width={40}
-                height={40}
-                style={{ marginRight: 12 }}
-              />
-              <span style={{ color: '#6B7280', fontSize: 24, fontWeight: 600 }}>
-                Freeport
-              </span>
-            </div>
-          </div>
-
-          {/* Main Card */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              backgroundColor: '#111113',
-              borderRadius: 16,
-              padding: '28px 32px',
-              flex: 1,
-              border: '1px solid #1F2937',
-            }}
-          >
-            {/* Handle Row */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: 20,
-              }}
-            >
+            {/* Handle */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 }}>
               <img
                 src={avatarUrl}
-                width={56}
-                height={56}
-                style={{
-                  borderRadius: 28,
-                  marginRight: 16,
-                  objectFit: 'cover',
-                }}
+                width={48}
+                height={48}
+                style={{ borderRadius: 24, marginRight: 14, objectFit: 'cover' }}
               />
-              <span
-                style={{
-                  fontSize: 28,
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                }}
-              >
+              <span style={{ fontSize: 28, fontWeight: 600, color: '#9ca3af' }}>
                 @{handle}
               </span>
             </div>
 
-            {/* Content */}
+            {/* Tweet Content */}
             <div
               style={{
                 display: 'flex',
-                flex: 1,
-                borderLeft: '3px solid #4d91f0',
+                borderLeft: '3px solid #3b82f6',
                 paddingLeft: 20,
               }}
             >
               <span
                 style={{
-                  fontSize: 28,
-                  color: '#D1D5DB',
-                  lineHeight: 1.45,
+                  fontSize: 24,
+                  color: '#e5e7eb',
+                  lineHeight: 1.5,
                 }}
               >
                 {displayContent}
