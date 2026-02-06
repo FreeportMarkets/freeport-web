@@ -140,30 +140,30 @@ export async function GET(request: NextRequest) {
             )}
           </div>
 
-          {/* Right: Action + Handle + Content - more vertical space */}
+          {/* Right: Action + Handle + Content */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               flex: 1,
-              padding: '48px 56px',
-              justifyContent: 'center',
+              padding: '52px 48px 48px 48px',
+              justifyContent: 'flex-start',
             }}
           >
             {/* Action Badge + Ticker */}
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 36 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 28 }}>
               <div
                 style={{
                   display: 'flex',
                   backgroundColor: actionBg,
-                  padding: '12px 28px',
-                  borderRadius: 8,
+                  padding: '14px 32px',
+                  borderRadius: 10,
                   marginRight: 24,
                 }}
               >
                 <span
                   style={{
-                    fontSize: 32,
+                    fontSize: 38,
                     fontWeight: 800,
                     color: actionColor,
                     letterSpacing: '1px',
@@ -174,7 +174,7 @@ export async function GET(request: NextRequest) {
               </div>
               <span
                 style={{
-                  fontSize: 52,
+                  fontSize: 60,
                   fontWeight: 800,
                   color: '#FFFFFF',
                 }}
@@ -184,29 +184,29 @@ export async function GET(request: NextRequest) {
             </div>
 
             {/* Handle */}
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 28 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 24 }}>
               <img
                 src={avatarUrl}
-                width={56}
-                height={56}
-                style={{ borderRadius: 28, marginRight: 16, objectFit: 'cover' }}
+                width={80}
+                height={80}
+                style={{ borderRadius: 40, marginRight: 18, objectFit: 'cover' }}
               />
-              <span style={{ fontSize: 32, fontWeight: 600, color: '#9ca3af' }}>
+              <span style={{ fontSize: 40, fontWeight: 600, color: '#9ca3af' }}>
                 @{handle}
               </span>
             </div>
 
-            {/* Tweet Content - larger text */}
+            {/* Tweet Content */}
             <div
               style={{
                 display: 'flex',
-                borderLeft: '4px solid #3b82f6',
+                borderLeft: '5px solid #3b82f6',
                 paddingLeft: 24,
               }}
             >
               <span
                 style={{
-                  fontSize: 30,
+                  fontSize: 36,
                   color: '#e5e7eb',
                   lineHeight: 1.5,
                 }}
