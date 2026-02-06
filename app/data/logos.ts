@@ -309,6 +309,8 @@ export const TOKEN_LOGOS: Record<string, string> = {
   OPENAION: '/logos/tokens/openai.png',
   ANTHRON: '/logos/tokens/anthropic.png',
   ANTHRPON: '/logos/tokens/anthrp.png',
+  KALSHI: '/logos/tokens/kalshi.png',
+  STRIPE: '/logos/tokens/stripe.png',
 };
 
 // Handle avatar icons - /public/logos/handles/
