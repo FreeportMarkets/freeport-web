@@ -35,10 +35,10 @@ export async function GET(request: NextRequest) {
             Sign Up.
           </span>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
-            Trade 2 Days.
+            Trade $15.
           </span>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#10B981', lineHeight: 1.1, letterSpacing: -2 }}>
-            Earn Rewards.
+            Get $20.
           </span>
         </div>
 

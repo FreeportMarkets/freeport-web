@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 import RefClipboard from './RefClipboard';
 
 export const metadata: Metadata = {
-  title: 'Freeport – Earn up to $1,000 in Pre-IPO Equity',
-  description: 'Join Freeport and earn up to $1,000 in pre-IPO equity from Anthropic, SpaceX, OpenAI, or Kalshi. Trade smarter with real-time signals.',
+  title: 'Freeport – Get $20 in Pre-IPO Equity',
+  description: 'Join Freeport and we both get $20 in pre-IPO equity from Anthropic, SpaceX, OpenAI, or Kalshi. Trade smarter with real-time signals.',
   openGraph: {
-    title: 'Earn up to $1,000 in Pre-IPO Equity',
-    description: 'Join Freeport with my link. Sign up, trade for 2 days, and we both earn rewards in Anthropic, SpaceX, OpenAI, or Kalshi equity.',
+    title: 'Get $20 in Pre-IPO Equity',
+    description: 'Join Freeport with my link. Sign up, trade $15, and we both get $20 in Anthropic, SpaceX, OpenAI, or Kalshi equity.',
     siteName: 'Freeport',
     type: 'website',
     images: [
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Earn up to $1,000 in Pre-IPO Equity',
-    description: 'Join Freeport and earn rewards in Anthropic, SpaceX, OpenAI, or Kalshi equity.',
+    title: 'Get $20 in Pre-IPO Equity',
+    description: 'Join Freeport and we both get $20 in Anthropic, SpaceX, OpenAI, or Kalshi equity.',
     images: ['/api/og-referral'],
   },
 };
