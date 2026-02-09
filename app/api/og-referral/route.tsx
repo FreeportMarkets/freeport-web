@@ -22,49 +22,53 @@ export async function GET(request: NextRequest) {
           width: '100%',
           height: '100%',
           display: 'flex',
-          flexDirection: 'column',
+          flexDirection: 'row',
           backgroundColor: '#0A0A0B',
-          padding: '48px 60px',
+          padding: '60px 80px',
+          alignItems: 'center',
           justifyContent: 'space-between',
         }}
       >
-        {/* Top: Freeport branding */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img
-            src={`${baseUrl}/logo-boat.png`}
-            width={44}
-            height={44}
-            style={{ objectFit: 'contain', marginRight: 14 }}
-          />
-          <span style={{ fontSize: 28, fontWeight: 700, color: '#9CA3AF', letterSpacing: -0.5 }}>
-            Freeport
+        {/* Left: Big tagline text */}
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 60 }}>
+          <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
+            Sign Up.
+          </span>
+          <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
+            Trade 2 Days.
+          </span>
+          <span style={{ fontSize: 72, fontWeight: 800, color: '#10B981', lineHeight: 1.1, letterSpacing: -2 }}>
+            Earn Rewards.
           </span>
         </div>
 
-        {/* Middle: CTA text */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <span style={{ fontSize: 56, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: -1 }}>
-            Earn up to $1,000
-          </span>
-          <span style={{ fontSize: 56, fontWeight: 800, color: '#10B981', lineHeight: 1.15, letterSpacing: -1 }}>
-            in Pre-IPO Equity
-          </span>
-          <span style={{ fontSize: 26, color: '#9CA3AF', marginTop: 8, fontWeight: 500 }}>
-            Sign up, trade for 2 days, and you both get rewarded
-          </span>
-        </div>
-
-        {/* Bottom: 4 company logos */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+        {/* Right: 2x2 logo grid */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            width: 340,
+            gap: 24,
+          }}
+        >
           {logoUrls.map((url, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: 148,
+                gap: 10,
+              }}
+            >
               <img
                 src={url}
-                width={52}
-                height={52}
-                style={{ borderRadius: 26, objectFit: 'cover' }}
+                width={96}
+                height={96}
+                style={{ borderRadius: 48, objectFit: 'cover' }}
               />
-              <span style={{ fontSize: 20, fontWeight: 600, color: '#E5E7EB' }}>
+              <span style={{ fontSize: 22, fontWeight: 600, color: '#E5E7EB' }}>
                 {companyNames[i]}
               </span>
             </div>
