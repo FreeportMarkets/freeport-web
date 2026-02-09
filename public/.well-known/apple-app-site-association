@@ -3,9 +3,9 @@
     "apps": [],
     "details": [
       {
-        "appID": "GT5B5WM5X7.com.bryanreed.freeapp",
+        "appID": "RFQ2WWUCVP.com.freeportmarkets.app",
         "paths": [
-          "/t/*"
+          "*"
         ]
       }
     ]
