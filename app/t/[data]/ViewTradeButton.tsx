@@ -12,6 +12,12 @@ export default function ViewTradeButton({ deepLink }: ViewTradeButtonProps) {
 
     const appStoreUrl = 'https://apps.apple.com/app/freeport/id6745072874';
 
+    // Copy ref code to clipboard for deferred deep linking
+    const refMatch = deepLink.match(/[?&]ref=([^&]+)/);
+    if (refMatch) {
+      navigator.clipboard.writeText(`FREEPORT_REF:${refMatch[1]}`).catch(() => {});
+    }
+
     // Try to open the app
     window.location.href = deepLink;
 

@@ -1,3 +1,32 @@
+import { Suspense } from 'react';
+import type { Metadata } from 'next';
+import RefClipboard from './RefClipboard';
+
+export const metadata: Metadata = {
+  title: 'Freeport – Earn up to $1,000 in Pre-IPO Equity',
+  description: 'Join Freeport and earn up to $1,000 in pre-IPO equity from Anthropic, SpaceX, OpenAI, or Kalshi. Trade smarter with real-time signals.',
+  openGraph: {
+    title: 'Earn up to $1,000 in Pre-IPO Equity',
+    description: 'Join Freeport with my link. Sign up, trade for 2 days, and we both earn rewards in Anthropic, SpaceX, OpenAI, or Kalshi equity.',
+    siteName: 'Freeport',
+    type: 'website',
+    images: [
+      {
+        url: '/api/og-referral',
+        width: 1200,
+        height: 630,
+        alt: 'Freeport – Earn Pre-IPO Equity',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Earn up to $1,000 in Pre-IPO Equity',
+    description: 'Join Freeport and earn rewards in Anthropic, SpaceX, OpenAI, or Kalshi equity.',
+    images: ['/api/og-referral'],
+  },
+};
+
 export default function Home() {
   return (
     <div style={{
@@ -9,6 +38,11 @@ export default function Home() {
       padding: 20,
       backgroundColor: '#0a0a0a',
     }}>
+      {/* Clipboard side effect for referral deep linking */}
+      <Suspense>
+        <RefClipboard />
+      </Suspense>
+
       {/* Logo in rounded container */}
       <div style={{
         width: 88,
