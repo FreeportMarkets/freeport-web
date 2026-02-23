@@ -10,7 +10,7 @@ export default function ViewTradeButton({ deepLink }: ViewTradeButtonProps) {
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
 
-    const appStoreUrl = 'https://apps.apple.com/app/freeport/id6745072874';
+    const appStoreUrl = 'https://apps.apple.com/us/app/freeport-markets/id6758952978';
 
     // Copy ref code to clipboard for deferred deep linking
     const refMatch = deepLink.match(/[?&]ref=([^&]+)/);

@@ -87,7 +87,7 @@ export default function Home() {
         Trade smarter with real-time signals
       </p>
       <a
-        href="https://apps.apple.com/app/freeport/id6745072874"
+        href="https://apps.apple.com/us/app/freeport-markets/id6758952978"
         style={{
           padding: '16px 40px',
           backgroundColor: '#1d9bf0',

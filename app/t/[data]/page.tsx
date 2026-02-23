@@ -85,7 +85,7 @@ export default function TradePage({ params, searchParams }: {
         </div>
         <h1 style={styles.title}>Freeport</h1>
         <p style={styles.subtitle}>Trade not found</p>
-        <a href="https://apps.apple.com/app/freeport/id6745072874" style={styles.ctaButton}>
+        <a href="https://apps.apple.com/us/app/freeport-markets/id6758952978" style={styles.ctaButton}>
           Download on iOS
         </a>
       </div>
