@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { detectPlatform, openAppThenStore } from '../../../lib/deeplink';
+import { detectPlatform, openAppThenStore, writePromoToClipboard } from '../../../lib/deeplink';
 
 interface ViewTradeButtonProps {
   deepLink: string;
@@ -11,10 +11,10 @@ export default function ViewTradeButton({ deepLink }: ViewTradeButtonProps) {
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
 
-    // Copy promo code to clipboard for deferred deep linking
+    // Copy promo code to clipboard for deferred deep linking (shared helper).
     const refMatch = deepLink.match(/[?&]ref=([^&]+)/);
     if (refMatch) {
-      navigator.clipboard.writeText(`FREEPORT_PROMO:${refMatch[1]}`).catch(() => {});
+      void writePromoToClipboard(refMatch[1]);
     }
 
     openAppThenStore(deepLink, detectPlatform(navigator.userAgent));
