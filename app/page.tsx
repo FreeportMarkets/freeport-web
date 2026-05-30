@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import RefClipboard from './RefClipboard';
 
 export const metadata: Metadata = {
-  title: 'Freeport – Get $20 in Pre-IPO Equity',
+  title: 'Freeport Markets',
   description: 'Join Freeport and we both get $20 in pre-IPO equity from Anthropic, SpaceX, OpenAI, or Kalshi. Trade smarter with real-time signals.',
   openGraph: {
     title: 'Get $20 in Pre-IPO Equity',
