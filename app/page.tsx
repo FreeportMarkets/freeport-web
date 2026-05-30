@@ -91,7 +91,7 @@ export default function Home() {
         maxWidth: 320,
         lineHeight: 1.5,
       }}>
-        Trade smarter with real-time signals
+        Trade like a hedge fund.
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
         <a
