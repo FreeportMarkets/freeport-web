@@ -27,6 +27,13 @@ export const metadata: Metadata = {
   },
 };
 
+// Both official badges rendered at the SAME width, stacked — equal width reads
+// as "same size" for stacked buttons regardless of each SVG's internal padding.
+const BADGE_WIDTH = 200;
+const badgeLinkStyle: React.CSSProperties = { display: 'inline-block' };
+const appStoreImgStyle: React.CSSProperties = { width: BADGE_WIDTH, height: 'auto', display: 'block' };
+const playImgStyle = appStoreImgStyle;
+
 export default function Home() {
   return (
     <div style={{
@@ -86,27 +93,25 @@ export default function Home() {
       }}>
         Trade smarter with real-time signals
       </p>
-      <a
-        href="https://apps.apple.com/us/app/freeport-markets/id6758952978"
-        style={{
-          padding: '16px 40px',
-          backgroundColor: '#1d9bf0',
-          color: '#fff',
-          borderRadius: 9999,
-          textDecoration: 'none',
-          fontWeight: 700,
-          fontSize: 17,
-        }}
-      >
-        Download on iOS
-      </a>
-      <p style={{
-        marginTop: 56,
-        color: '#52525b',
-        fontSize: 13,
-      }}>
-        Available on the App Store
-      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <a
+          href="https://apps.apple.com/us/app/freeport-markets/id6758952978"
+          aria-label="Download on the App Store"
+          style={badgeLinkStyle}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/badges/app-store-badge.svg" alt="Download on the App Store" style={appStoreImgStyle} />
+        </a>
+
+        <a
+          href="https://play.google.com/store/apps/details?id=com.freeportmarkets.app"
+          aria-label="Get it on Google Play"
+          style={badgeLinkStyle}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/badges/google-play-badge.svg" alt="Get it on Google Play" style={playImgStyle} />
+        </a>
+      </div>
     </div>
   );
 }

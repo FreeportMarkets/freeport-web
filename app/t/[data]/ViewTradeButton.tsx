@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
+import { detectPlatform, openAppThenStore, writePromoToClipboard } from '../../../lib/deeplink';
 
 interface ViewTradeButtonProps {
   deepLink: string;
@@ -10,24 +11,13 @@ export default function ViewTradeButton({ deepLink }: ViewTradeButtonProps) {
   const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
 
-    const appStoreUrl = 'https://apps.apple.com/us/app/freeport-markets/id6758952978';
-
-    // Copy ref code to clipboard for deferred deep linking
+    // Copy promo code to clipboard for deferred deep linking (shared helper).
     const refMatch = deepLink.match(/[?&]ref=([^&]+)/);
     if (refMatch) {
-      navigator.clipboard.writeText(`FREEPORT_REF:${refMatch[1]}`).catch(() => {});
+      void writePromoToClipboard(refMatch[1]);
     }
 
-    // Try to open the app
-    window.location.href = deepLink;
-
-    // If app doesn't open after 1.5s, redirect to App Store
-    setTimeout(() => {
-      // Check if page is still visible (app didn't open)
-      if (!document.hidden) {
-        window.location.href = appStoreUrl;
-      }
-    }, 1500);
+    openAppThenStore(deepLink, detectPlatform(navigator.userAgent));
   }, [deepLink]);
 
   return (
