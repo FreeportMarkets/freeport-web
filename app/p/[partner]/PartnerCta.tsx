@@ -35,37 +35,32 @@ export default function PartnerCta({ partner, code }: { partner: string; code: s
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%', maxWidth: 320 }}>
-      <button onClick={() => go('ios')} style={storeButtonStyle} aria-label="Download on the App Store">
-        <span style={{ fontSize: 22, lineHeight: 1 }}></span>
-        <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
-          <span style={{ fontSize: 11, opacity: 0.85 }}>Download on the</span>
-          <span style={{ fontSize: 18, fontWeight: 700 }}>App Store</span>
-        </span>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+      <button onClick={() => go('ios')} style={badgeButtonStyle} aria-label="Download on the App Store">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/badges/app-store-badge.svg" alt="Download on the App Store" style={appStoreImgStyle} />
       </button>
 
-      <button onClick={() => go('android')} style={storeButtonStyle} aria-label="Get it on Google Play">
-        <span style={{ fontSize: 20, lineHeight: 1 }}>▶</span>
-        <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
-          <span style={{ fontSize: 11, opacity: 0.85 }}>Get it on</span>
-          <span style={{ fontSize: 18, fontWeight: 700 }}>Google Play</span>
-        </span>
+      <button onClick={() => go('android')} style={badgeButtonStyle} aria-label="Get it on Google Play">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/badges/google-play-badge.svg" alt="Get it on Google Play" style={playImgStyle} />
       </button>
     </div>
   );
 }
 
-const storeButtonStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: 12,
-  width: '100%',
-  padding: '14px 20px',
-  backgroundColor: '#fff',
-  color: '#000',
+// Both official badges rendered at the SAME width, stacked — equal width reads
+// as "same size" for stacked buttons regardless of each SVG's internal padding.
+const BADGE_WIDTH = 200;
+const badgeButtonStyle: React.CSSProperties = {
+  background: 'none',
   border: 'none',
-  borderRadius: 12,
+  padding: 0,
   cursor: 'pointer',
-  fontFamily: 'inherit',
 };
+const appStoreImgStyle: React.CSSProperties = {
+  width: BADGE_WIDTH,
+  height: 'auto',
+  display: 'block',
+};
+const playImgStyle = appStoreImgStyle;
