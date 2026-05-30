@@ -86,27 +86,45 @@ export default function Home() {
       }}>
         Trade smarter with real-time signals
       </p>
-      <a
-        href="https://apps.apple.com/us/app/freeport-markets/id6758952978"
-        style={{
-          padding: '16px 40px',
-          backgroundColor: '#1d9bf0',
-          color: '#fff',
-          borderRadius: 9999,
-          textDecoration: 'none',
-          fontWeight: 700,
-          fontSize: 17,
-        }}
-      >
-        Download on iOS
-      </a>
-      <p style={{
-        marginTop: 56,
-        color: '#52525b',
-        fontSize: 13,
-      }}>
-        Available on the App Store
-      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14, width: '100%', maxWidth: 320 }}>
+        <a
+          href="https://apps.apple.com/us/app/freeport-markets/id6758952978"
+          aria-label="Download on the App Store"
+          style={storeButtonStyle}
+        >
+          <span style={{ fontSize: 22, lineHeight: 1 }}></span>
+          <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
+            <span style={{ fontSize: 11, opacity: 0.85 }}>Download on the</span>
+            <span style={{ fontSize: 18, fontWeight: 700 }}>App Store</span>
+          </span>
+        </a>
+
+        <a
+          href="https://play.google.com/store/apps/details?id=com.freeportmarkets.app"
+          aria-label="Get it on Google Play"
+          style={storeButtonStyle}
+        >
+          <span style={{ fontSize: 20, lineHeight: 1 }}>▶</span>
+          <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1.1 }}>
+            <span style={{ fontSize: 11, opacity: 0.85 }}>Get it on</span>
+            <span style={{ fontSize: 18, fontWeight: 700 }}>Google Play</span>
+          </span>
+        </a>
+      </div>
     </div>
   );
 }
+
+const storeButtonStyle: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 12,
+  width: '100%',
+  padding: '14px 20px',
+  backgroundColor: '#fff',
+  color: '#000',
+  borderRadius: 12,
+  textDecoration: 'none',
+  fontFamily: 'inherit',
+};
