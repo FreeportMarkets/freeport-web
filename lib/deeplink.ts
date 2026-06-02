@@ -16,12 +16,48 @@ export function storeUrl(store: Store): string {
   return store === 'android' ? PLAY_STORE_URL : APP_STORE_URL;
 }
 
-/** Write the promo code to the clipboard for cold-install deferred attribution. */
-export async function writePromoToClipboard(code: string): Promise<void> {
+/**
+ * Write the promo code to the clipboard for cold-install deferred attribution.
+ * Returns true if a write was issued.
+ *
+ * Callers MUST `await` this before navigating to the store — an unawaited write
+ * followed by `window.location.href = …` can be torn down before the async
+ * Clipboard write commits (especially on the fast Android → Play Store handoff).
+ *
+ * Tries the async Clipboard API first (Chrome/Safari on https + user gesture),
+ * then falls back to a hidden-textarea `execCommand('copy')` for older/embedded
+ * webviews where the async API is missing or blocked. Both write the same
+ * string, so this only ever helps. (For the partner cold-install flow the link
+ * should still open in a real browser, not an in-app webview.)
+ */
+export async function writePromoToClipboard(code: string): Promise<boolean> {
+  const text = `FREEPORT_PROMO:${code}`;
   try {
-    await navigator.clipboard.writeText(`FREEPORT_PROMO:${code}`);
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
   } catch {
-    /* best-effort — user-gesture context maximizes success */
+    /* async API blocked/unavailable — fall through to legacy copy */
+  }
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    let ok = false;
+    try {
+      ta.select();
+      ok = document.execCommand('copy');
+    } finally {
+      // Always remove the offscreen node, even if select()/execCommand throws.
+      document.body.removeChild(ta);
+    }
+    return ok;
+  } catch {
+    return false;
   }
 }
 
