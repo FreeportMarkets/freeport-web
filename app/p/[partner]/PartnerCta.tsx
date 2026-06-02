@@ -13,7 +13,7 @@ export default function PartnerCta({ partner, code }: { partner: string; code: s
   // Both store buttons share the same click_id for this page load so a user who
   // taps both doesn't double-count as two distinct clicks.
   const go = useCallback(
-    (store: Store) => {
+    async (store: Store) => {
       const url = new URL(window.location.href);
       const clickId = url.searchParams.get('click_id') ?? uuid();
 
@@ -25,10 +25,13 @@ export default function PartnerCta({ partner, code }: { partner: string; code: s
         keepalive: true,
       }).catch(() => {});
 
-      // 2. clipboard bridge for cold-install attribution
-      void writePromoToClipboard(code);
+      // 2. clipboard bridge for cold-install attribution — AWAIT so the write
+      //    commits before we hand off to the store. An unawaited write followed
+      //    by an immediate window.location.href can be torn down mid-flight,
+      //    especially on the fast Android → Play Store transition.
+      await writePromoToClipboard(code);
 
-      // 3. straight to the store the user picked
+      // 3. now go to the store the user picked
       window.location.href = storeUrl(store);
     },
     [partner, code],
@@ -36,12 +39,12 @@ export default function PartnerCta({ partner, code }: { partner: string; code: s
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-      <button onClick={() => go('ios')} style={badgeButtonStyle} aria-label="Download on the App Store">
+      <button onClick={() => void go('ios')} style={badgeButtonStyle} aria-label="Download on the App Store">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/badges/app-store-badge.svg" alt="Download on the App Store" style={appStoreImgStyle} />
       </button>
 
-      <button onClick={() => go('android')} style={badgeButtonStyle} aria-label="Get it on Google Play">
+      <button onClick={() => void go('android')} style={badgeButtonStyle} aria-label="Get it on Google Play">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/badges/google-play-badge.svg" alt="Get it on Google Play" style={playImgStyle} />
       </button>
