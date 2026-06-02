@@ -47,9 +47,14 @@ export async function writePromoToClipboard(code: string): Promise<boolean> {
     ta.style.position = 'fixed';
     ta.style.top = '-9999px';
     document.body.appendChild(ta);
-    ta.select();
-    const ok = document.execCommand('copy');
-    document.body.removeChild(ta);
+    let ok = false;
+    try {
+      ta.select();
+      ok = document.execCommand('copy');
+    } finally {
+      // Always remove the offscreen node, even if select()/execCommand throws.
+      document.body.removeChild(ta);
+    }
     return ok;
   } catch {
     return false;
