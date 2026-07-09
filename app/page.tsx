@@ -4,10 +4,10 @@ import RefClipboard from './RefClipboard';
 
 export const metadata: Metadata = {
   title: 'Freeport Markets',
-  description: 'Join Freeport, trade perps, and we both get $10. Earn up to $100 more in points as your friends trade.',
+  description: 'Join Freeport, trade perps, and we both get $10. Earn up to $100 for every friend you invite.',
   openGraph: {
     title: 'You both get $10',
-    description: 'Join Freeport with my link. Sign up, trade perps, and we both get $10 — plus I earn up to $100 more as you trade.',
+    description: 'Join Freeport with my link. Sign up, trade perps, and we both get $10 — plus earn up to $100 for every friend you invite.',
     siteName: 'Freeport',
     type: 'website',
     images: [
