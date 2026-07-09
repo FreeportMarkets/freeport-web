@@ -6,14 +6,15 @@ export const runtime = 'edge';
 export async function GET(request: NextRequest) {
   const baseUrl = new URL(request.url).origin;
 
+  // Perps we trade — the default-watchlist crypto majors.
   const logoUrls = [
-    `${baseUrl}/logos/tokens/anthrp.png`,
-    `${baseUrl}/logos/tokens/spacex.png`,
-    `${baseUrl}/logos/tokens/openai.png`,
-    `${baseUrl}/logos/tokens/kalshi.png`,
+    `${baseUrl}/logos/tokens/btc.png`,
+    `${baseUrl}/logos/tokens/eth.png`,
+    `${baseUrl}/logos/tokens/sol.png`,
+    `${baseUrl}/logos/tokens/hype.png`,
   ];
 
-  const companyNames = ['Anthropic', 'SpaceX', 'OpenAI', 'Kalshi'];
+  const companyNames = ['BTC', 'ETH', 'SOL', 'HYPE'];
 
   return new ImageResponse(
     (
@@ -32,13 +33,13 @@ export async function GET(request: NextRequest) {
         {/* Left: Big tagline text */}
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 60 }}>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
-            Sign Up.
+            Sign up.
           </span>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
-            Trade $15.
+            Trade perps.
           </span>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#10B981', lineHeight: 1.1, letterSpacing: -2 }}>
-            Get $20.
+            Get $10.
           </span>
         </div>
 
