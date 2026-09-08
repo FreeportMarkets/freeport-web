@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
               lineHeight: 1.35,
             }}
           >
-            <span>Each qualifying friend can receive $50 in promotional, non-cash points.</span>
+            <span>You and each qualifying friend can receive $50 in promotional, non-cash points.</span>
             <span>You earn 20% of the points they generate.</span>
             <span style={{ color: '#8E949D', fontSize: 18 }}>Terms and eligibility apply.</span>
           </div>
