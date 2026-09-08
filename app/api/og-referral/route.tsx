@@ -30,17 +30,33 @@ export async function GET(request: NextRequest) {
           justifyContent: 'space-between',
         }}
       >
-        {/* Left: Big tagline text */}
+        {/* Left: referral offer, stated as promotional points rather than cash. */}
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 60 }}>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
-            Sign up.
+            Invite friends.
           </span>
           <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
-            Trade perps.
+            Earn up to
           </span>
-          <span style={{ fontSize: 72, fontWeight: 800, color: '#10B981', lineHeight: 1.1, letterSpacing: -2 }}>
-            Get $10.
+          <span style={{ fontSize: 72, fontWeight: 800, color: '#9BCDF2', lineHeight: 1.1, letterSpacing: -2 }}>
+            $500 in points.
           </span>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: 28,
+              gap: 6,
+              maxWidth: 620,
+              color: '#C9CDD3',
+              fontSize: 22,
+              lineHeight: 1.35,
+            }}
+          >
+            <span>Each qualifying friend can receive $50 in promotional, non-cash points.</span>
+            <span>You earn 20% of the points they generate.</span>
+            <span style={{ color: '#8E949D', fontSize: 18 }}>Terms and eligibility apply.</span>
+          </div>
         </div>
 
         {/* Right: 2x2 logo grid */}

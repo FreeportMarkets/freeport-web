@@ -3,11 +3,14 @@ import type { Metadata } from 'next';
 import RefClipboard from './RefClipboard';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://share.freeportmarkets.com'),
   title: 'Freeport Markets',
-  description: 'Join Freeport, trade perps, and we both get $10. Earn up to $100 for every friend you invite.',
+  description:
+    'Invite friends to Freeport. You and each qualifying friend can receive $50 in promotional, non-cash points, and you earn 20% of the points they generate. Terms and eligibility apply.',
   openGraph: {
-    title: 'You both get $10',
-    description: 'Join Freeport with my link. Sign up, trade perps, and we both get $10 — plus earn up to $100 for every friend you invite.',
+    title: 'Earn up to $500 in Freeport points',
+    description:
+      'You and each qualifying friend can receive $50 in promotional, non-cash points. Earn 20% of the points they generate. Terms and eligibility apply.',
     siteName: 'Freeport',
     type: 'website',
     images: [
@@ -15,14 +18,15 @@ export const metadata: Metadata = {
         url: '/api/og-referral',
         width: 1200,
         height: 630,
-        alt: 'Freeport – Sign up, trade perps, get $10',
+        alt: 'Freeport referral offer: earn up to $500 in promotional points',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'You both get $10',
-    description: 'Join Freeport, trade perps, and we both get $10.',
+    title: 'Earn up to $500 in Freeport points',
+    description:
+      'You and each qualifying friend can receive $50 in promotional, non-cash points. Earn 20% of the points they generate. Terms and eligibility apply.',
     images: ['/api/og-referral'],
   },
 };
