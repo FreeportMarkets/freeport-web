@@ -2,6 +2,7 @@
 
 import { useCallback } from 'react';
 import { detectPlatform, openAppThenStore, writePromoToClipboard } from '../../../lib/deeplink';
+import { FIXED_DARK_SHARE_COLORS } from '../../../lib/shareTheme';
 
 interface ViewTradeButtonProps {
   deepLink: string;
@@ -26,8 +27,8 @@ export default function ViewTradeButton({ deepLink }: ViewTradeButtonProps) {
       onClick={handleClick}
       style={{
         padding: '16px 40px',
-        backgroundColor: '#1d9bf0',
-        color: '#fff',
+        backgroundColor: FIXED_DARK_SHARE_COLORS.brandFill,
+        color: FIXED_DARK_SHARE_COLORS.onBrandFill,
         borderRadius: 9999,
         textDecoration: 'none',
         fontWeight: 700,

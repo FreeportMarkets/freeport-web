@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getTokenLogoUrl, getHandleIconUrl, getPlaceholderAvatar, getTickerPlaceholder } from '../../data/logos';
+import { FIXED_DARK_SHARE_COLORS } from '../../../lib/shareTheme';
 import ViewTradeButton from './ViewTradeButton';
 
 // Trade data encoded in URL
@@ -116,7 +117,7 @@ export default function TradePage({ params, searchParams }: {
         <div style={styles.cardHeader}>
           <span style={{
             ...styles.actionText,
-            color: isSell ? '#ef4444' : '#22c55e',
+            color: isSell ? FIXED_DARK_SHARE_COLORS.negative : FIXED_DARK_SHARE_COLORS.positive,
           }}>
             {action}
           </span>
@@ -230,7 +231,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   quoteSection: {
     paddingLeft: 12,
-    borderLeft: '2px solid #3b82f6',
+    borderLeft: `2px solid ${FIXED_DARK_SHARE_COLORS.brandAccent}`,
   },
   handleRow: {
     display: 'flex',
@@ -251,8 +252,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   ctaButton: {
     padding: '16px 40px',
-    backgroundColor: '#1d9bf0',
-    color: '#fff',
+    backgroundColor: FIXED_DARK_SHARE_COLORS.brandFill,
+    color: FIXED_DARK_SHARE_COLORS.onBrandFill,
     borderRadius: 9999,
     textDecoration: 'none',
     fontWeight: 700,
