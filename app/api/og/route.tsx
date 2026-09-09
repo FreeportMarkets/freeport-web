@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { HANDLE_ICONS, TOKEN_LOGOS } from '../../data/logos';
+import { FIXED_DARK_SHARE_COLORS } from '../../../lib/shareTheme';
 
 export const runtime = 'edge';
 
@@ -81,8 +82,12 @@ export async function GET(request: NextRequest) {
   if (hasTradeData) {
     const isSell = action === 'SELL';
     const actionText = isSell ? 'SELL' : 'BUY';
-    const actionColor = isSell ? '#ef4444' : '#22c55e';
-    const actionBg = isSell ? 'rgba(239, 68, 68, 0.15)' : 'rgba(34, 197, 94, 0.15)';
+    const actionColor = isSell
+      ? FIXED_DARK_SHARE_COLORS.negative
+      : FIXED_DARK_SHARE_COLORS.positive;
+    const actionBg = isSell
+      ? FIXED_DARK_SHARE_COLORS.negativeTint
+      : FIXED_DARK_SHARE_COLORS.positiveTint;
     const avatarUrl = getHandleAvatarUrl(handle, baseUrl);
     const tokenLogoUrl = getTokenLogoUrl(ticker, baseUrl);
 
@@ -200,7 +205,7 @@ export async function GET(request: NextRequest) {
             <div
               style={{
                 display: 'flex',
-                borderLeft: '5px solid #3b82f6',
+                borderLeft: `5px solid ${FIXED_DARK_SHARE_COLORS.brandAccent}`,
                 paddingLeft: 24,
               }}
             >

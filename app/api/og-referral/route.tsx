@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
+import { FIXED_DARK_SHARE_COLORS } from '../../../lib/shareTheme';
 
 export const runtime = 'edge';
 
@@ -32,13 +33,13 @@ export async function GET(request: NextRequest) {
       >
         {/* Left: referral offer, stated as promotional points rather than cash. */}
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, paddingRight: 60 }}>
-          <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
+          <span style={{ fontSize: 72, fontWeight: 800, fontFamily: 'sans serif', color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
             Invite friends.
           </span>
-          <span style={{ fontSize: 72, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
+          <span style={{ fontSize: 72, fontWeight: 800, fontFamily: 'sans serif', color: '#FFFFFF', lineHeight: 1.1, letterSpacing: -2 }}>
             Earn up to
           </span>
-          <span style={{ fontSize: 72, fontWeight: 800, color: '#9BCDF2', lineHeight: 1.1, letterSpacing: -2 }}>
+          <span style={{ fontSize: 72, fontWeight: 800, fontFamily: 'sans serif', color: FIXED_DARK_SHARE_COLORS.brandAccent, lineHeight: 1.1, letterSpacing: -2 }}>
             $500 in points.
           </span>
           <div
