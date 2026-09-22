@@ -46,7 +46,7 @@ const assert = require('node:assert/strict');
         const plain = await browser.newPage();
         await plain.goto(root);
         assert.equal(await plain.getByRole('button', { name: 'Copy code', exact: true }).count(), 0);
-        assert.match(await plain.getByRole('link', { name: 'Download on the App Store', exact: true }).getAttribute('href'), /^https:\/\/apps.apple.com\//);
+        assert.match(await plain.getByRole('link', { name: 'Download on the App Store', exact: true }).getAttribute('href'), /^https:\/\/apps\.apple\.com\//);
         await plain.close();
         // SSR anchors must still install with all page JavaScript disabled.
         const noJsContext = await browser.newContext({ javaScriptEnabled: false });
@@ -55,7 +55,7 @@ const assert = require('node:assert/strict');
         await noJs.goto(root + '?ref=FREE-9MXC2B');
         const noJsTarget = new URL(await noJs.getByRole('link', { name: 'Get it on Google Play', exact: true }).getAttribute('href'));
         assert.equal(noJsTarget.searchParams.get('deep_link_sub1'), 'FREE-9MXC2B');
-        assert.match(noJsTarget.searchParams.get('af_web_dp'), /^https:\/\/play.google.com\//);
+        assert.match(noJsTarget.searchParams.get('af_web_dp'), /^https:\/\/play\.google\.com\//);
         await noJs.getByRole('link', { name: 'Get it on Google Play', exact: true }).click();
         await noJs.waitForURL('https://freeport.onelink.me/**');
         await noJsContext.close();
@@ -82,7 +82,7 @@ const assert = require('node:assert/strict');
         await canceled.evaluate(() => window.finishCopy());
         await canceled.waitForURL('https://freeport.onelink.me/**');
         assert.equal(canceledRedirects, 1);
-        assert.match(new URL(canceled.url()).searchParams.get('af_web_dp'), /^https:\/\/play.google.com\//);
+        assert.match(new URL(canceled.url()).searchParams.get('af_web_dp'), /^https:\/\/play\.google\.com\//);
         await canceled.close();
         console.log('PASS mobile+desktop rendering, exact clipboard marker, no mount copy, awaited navigation, denied copy stays visible, explicit continuation, installed-app URL, unchanged no-ref anchors, no-JavaScript install, cancellation and subsequent Android handoff');
     }
