@@ -27,7 +27,7 @@ test('the creator install link carries the same code through OneLink and install
 
 test('unsafe or malformed overrides fall back to the verified Freeport template', () => {
   const { referralInstallUrl } = load();
-  for (const base of ['javascript:alert(1)', 'https://elsewhere.onelink.me/test', 'https://freeport.onelink.me/', 'broken']) {
+  for (const base of ['javascript:alert(1)', 'https://elsewhere.onelink.me/test', 'https://freeport.onelink.me/', 'https://freeport.onelink.me:444/N9I3', 'broken']) {
     const url = new URL(referralInstallUrl('FREE-9MXC2B', 'android', base));
     assert.equal(url.origin + url.pathname, 'https://freeport.onelink.me/N9I3');
   }

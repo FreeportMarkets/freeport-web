@@ -79,7 +79,7 @@ export function referralInstallUrl(code: string, store: Store, oneLinkBase?: str
     if (!base) continue;
     try {
       const url = new URL(base);
-      if (url.protocol === 'https:' && url.hostname === 'freeport.onelink.me'
+      if (url.origin === 'https://freeport.onelink.me'
         && url.pathname !== '/' && !url.username && !url.password) {
         url.searchParams.set('pid', 'creator_referral');
         url.searchParams.set('c', 'creator_program');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { referralInstallUrl, storeUrl, writeReferralToClipboard, type Store } from '../lib/deeplink';
 
 const badgeStyle: React.CSSProperties = { width: 200, height: 'auto', display: 'block' };
@@ -16,13 +16,30 @@ export default function ReferralInstallCta({ code }: { code: string | null }) {
   const [status, setStatus] = useState<'idle' | 'copying' | 'copied' | 'failed'>('idle');
   const [pendingStore, setPendingStore] = useState<Store | null>(null);
   const busy = useRef(false);
+  const action = useRef(0);
+
+  useEffect(() => {
+    busy.current = false;
+    setStatus('idle');
+    setPendingStore(null);
+    return () => { action.current++; };
+  }, [code]);
+
+  function cancelStoreAction() {
+    action.current++;
+    busy.current = false;
+    setStatus('idle');
+    setPendingStore(null);
+  }
 
   async function copyAndContinue(store?: Store) {
     if (!code || busy.current) return;
+    const currentAction = ++action.current;
     busy.current = true;
     setStatus('copying');
     setPendingStore(store ?? null);
     const copied = await writeReferralToClipboard(code);
+    if (currentAction !== action.current) return;
     setStatus(copied ? 'copied' : 'failed');
     busy.current = false;
     if (copied && store) {
@@ -57,8 +74,13 @@ export default function ReferralInstallCta({ code }: { code: string | null }) {
         const label = store === 'ios' ? 'Download on the App Store' : 'Get it on Google Play';
         const badge = <img src={`/badges/${store === 'ios' ? 'app-store' : 'google-play'}-badge.svg`} alt={label} style={badgeStyle} />;
         return code ? (
-          <button key={store} type="button" aria-label={label} disabled={status === 'copying'}
-            onClick={() => void copyAndContinue(store)} style={buttonStyle}>{badge}</button>
+          <a key={store} href={referralInstallUrl(code, store, process.env.NEXT_PUBLIC_REFERRAL_ONELINK_URL)}
+            aria-label={label} aria-disabled={status === 'copying'}
+            onClick={(event) => {
+              if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              void copyAndContinue(store);
+            }} style={buttonStyle}>{badge}</a>
         ) : (
           <a key={store} href={storeUrl(store)} aria-label={label}>{badge}</a>
         );
@@ -71,7 +93,8 @@ export default function ReferralInstallCta({ code }: { code: string | null }) {
         </a>
       )}
 
-      {code && <a href={`freeport://referral/${encodeURIComponent(code)}`} style={{ ...textButtonStyle, marginTop: 8 }}>
+      {code && <a href={`freeport://referral/${encodeURIComponent(code)}`} onClick={cancelStoreAction}
+        style={{ ...textButtonStyle, marginTop: 8 }}>
         Already installed? Open Freeport
       </a>}
     </div>
