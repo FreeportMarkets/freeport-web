@@ -1,6 +1,5 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import RefClipboard from './RefClipboard';
+import ReferralInstallCta from './ReferralInstallCta';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://share.freeportmarkets.com'),
@@ -31,14 +30,9 @@ export const metadata: Metadata = {
   },
 };
 
-// Both official badges rendered at the SAME width, stacked — equal width reads
-// as "same size" for stacked buttons regardless of each SVG's internal padding.
-const BADGE_WIDTH = 200;
-const badgeLinkStyle: React.CSSProperties = { display: 'inline-block' };
-const appStoreImgStyle: React.CSSProperties = { width: BADGE_WIDTH, height: 'auto', display: 'block' };
-const playImgStyle = appStoreImgStyle;
-
-export default function Home() {
+export default function Home({ searchParams }: { searchParams?: { ref?: string | string[] } }) {
+  const rawRef = typeof searchParams?.ref === 'string' ? searchParams.ref.trim().toUpperCase() : '';
+  const code = /^[A-Z0-9][A-Z0-9_-]{1,63}$/.test(rawRef) ? rawRef : null;
   return (
     <div style={{
       minHeight: '100vh',
@@ -47,13 +41,9 @@ export default function Home() {
       alignItems: 'center',
       justifyContent: 'center',
       padding: 20,
+      boxSizing: 'border-box',
       backgroundColor: '#0a0a0a',
     }}>
-      {/* Clipboard side effect for referral deep linking */}
-      <Suspense>
-        <RefClipboard />
-      </Suspense>
-
       {/* Logo in rounded container */}
       <div style={{
         width: 88,
@@ -97,25 +87,7 @@ export default function Home() {
       }}>
         Trade like a hedge fund.
       </p>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
-        <a
-          href="https://apps.apple.com/us/app/freeport-markets/id6758952978"
-          aria-label="Download on the App Store"
-          style={badgeLinkStyle}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/badges/app-store-badge.svg" alt="Download on the App Store" style={appStoreImgStyle} />
-        </a>
-
-        <a
-          href="https://play.google.com/store/apps/details?id=com.freeportmarkets.app"
-          aria-label="Get it on Google Play"
-          style={badgeLinkStyle}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/badges/google-play-badge.svg" alt="Get it on Google Play" style={playImgStyle} />
-        </a>
-      </div>
+      <ReferralInstallCta code={code} />
     </div>
   );
 }

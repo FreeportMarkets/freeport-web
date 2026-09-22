@@ -31,7 +31,15 @@ export function storeUrl(store: Store): string {
  * should still open in a real browser, not an in-app webview.)
  */
 export async function writePromoToClipboard(code: string): Promise<boolean> {
-  const text = `FREEPORT_PROMO:${code}`;
+  return writeClipboardText(`FREEPORT_PROMO:${code}`);
+}
+
+/** Same durable clipboard bridge, preserving the referral marker the app reads. */
+export async function writeReferralToClipboard(code: string): Promise<boolean> {
+  return writeClipboardText(`FREEPORT_REF:${code}`);
+}
+
+async function writeClipboardText(text: string): Promise<boolean> {
   try {
     if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(text);
@@ -59,6 +67,35 @@ export async function writePromoToClipboard(code: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+// Existing Freeport template, verified against both live store destinations.
+export const REFERRAL_ONELINK_URL = 'https://freeport.onelink.me/N9I3';
+
+/** Preserve the referral through AppsFlyer's existing install handoff. */
+export function referralInstallUrl(code: string, store: Store, oneLinkBase?: string): string {
+  const candidates = [oneLinkBase, REFERRAL_ONELINK_URL];
+  for (const base of candidates) {
+    if (!base) continue;
+    try {
+      const url = new URL(base);
+      if (url.origin === 'https://freeport.onelink.me'
+        && url.pathname !== '/' && !url.username && !url.password) {
+        url.searchParams.set('pid', 'creator_referral');
+        url.searchParams.set('c', 'creator_program');
+        url.searchParams.set('deep_link_value', 'referral');
+        url.searchParams.set('deep_link_sub1', code);
+        url.searchParams.set('af_dp', `freeport://referral/${encodeURIComponent(code)}`);
+        url.searchParams.set('ref', code);
+        url.searchParams.set('af_channel', 'creator');
+        url.searchParams.set('af_web_dp', storeUrl(store));
+        return url.toString();
+      }
+    } catch {
+      // A malformed override must not disable the known working template.
+    }
+  }
+  return storeUrl(store);
 }
 
 /**
